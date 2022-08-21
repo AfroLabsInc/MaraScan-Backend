@@ -20,7 +20,12 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.any('/', async () => {
-  console.log('Hello World')
+Route.any('/queue', async ({ request }) => {
+  console.log(request.all())
+  return { hello: 'world' }
+})
+
+Route.any('/result', async ({ request }) => {
+  console.log(request.all())
   return { hello: 'world' }
 })
