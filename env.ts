@@ -13,10 +13,13 @@
 */
 
 import Env from '@ioc:Adonis/Core/Env'
+const isDev = () => process.env.NODE_ENV === 'development'
 
 export default Env.rules({
-  HOST: Env.schema.string({ format: 'host' }),
-  PORT: Env.schema.number(),
+  HOST: isDev()
+    ? Env.schema.string({ format: 'host' })
+    : Env.schema.string.optional({ format: 'host' }),
+  PORT: isDev() ? Env.schema.number() : Env.schema.number.optional(),
   APP_KEY: Env.schema.string(),
   APP_NAME: Env.schema.string(),
   DRIVE_DISK: Env.schema.enum(['local'] as const),
