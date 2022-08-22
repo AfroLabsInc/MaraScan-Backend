@@ -22,10 +22,14 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.any('/queue', async ({ request }) => {
   console.log(request.all())
+
   return { hello: 'world' }
 })
 
 Route.any('/result', async ({ request }) => {
+  const { Result } = request.all()
   console.log(request.all())
+
+  console.log(Result?.ReferenceData.ReferenceItem)
   return { hello: 'world' }
 })
