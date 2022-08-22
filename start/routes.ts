@@ -30,6 +30,6 @@ Route.any('/result', async ({ request }) => {
   const { Result } = request.all()
   console.log(request.all())
 
-  console.log(Result?.ReferenceData.ReferenceItem)
+  console.log(Result?.ResultParameters.ResultParameter)
   return { hello: 'world' }
 })
