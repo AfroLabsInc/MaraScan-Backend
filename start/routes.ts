@@ -19,22 +19,9 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import { ussdRoutes } from './routes/index'
-
-Route.any('/queue', async ({ request }) => {
-  console.log(request.all())
-
-  return { hello: 'world' }
-})
-
-Route.any('/result', async ({ request }) => {
-  const { Result } = request.all()
-  console.log(request.all())
-
-  console.log(Result?.ResultParameters.ResultParameter)
-  return { hello: 'world' }
-})
+import { ussdRoutes, mpesaRoutes } from './routes/index'
 
 Route.group(() => {
   ussdRoutes()
+  mpesaRoutes()
 }).prefix('api/v1')

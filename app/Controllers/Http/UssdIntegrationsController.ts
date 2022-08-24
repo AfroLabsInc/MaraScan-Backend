@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UssdsController {
+export default class UssdIntegrationsController {
   public async handler({ request }: HttpContextContract) {
     const { phoneNumber, text } = request.all()
     console.log(request.all())
