@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import { ussdRoutes } from './routes/index'
 
 Route.any('/queue', async ({ request }) => {
   console.log(request.all())
@@ -33,3 +34,7 @@ Route.any('/result', async ({ request }) => {
   console.log(Result?.ResultParameters.ResultParameter)
   return { hello: 'world' }
 })
+
+Route.group(() => {
+  ussdRoutes()
+}).prefix('api/v1')
