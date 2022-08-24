@@ -7,7 +7,7 @@ export default class UssdsController {
 
     let response = ''
 
-    if (text === '') {
+    if (text === null) {
       // This is the first request. Note how we start the response with CON
       response = `CON What would you like to check
         1. My account
