@@ -24,4 +24,14 @@ export default Env.rules({
   APP_NAME: Env.schema.string(),
   DRIVE_DISK: Env.schema.enum(['local'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
+
+  DB_CONNECTION: Env.schema.string(),
+
+  PG_HOST: isDev()
+    ? Env.schema.string({ format: 'host' })
+    : Env.schema.string.optional({ format: 'host' }),
+  PG_PORT: isDev() ? Env.schema.number() : Env.schema.number.optional(),
+  PG_USER: isDev() ? Env.schema.string() : Env.schema.string.optional(),
+  PG_PASSWORD: isDev() ? Env.schema.string() : Env.schema.string.optional(),
+  PG_DB_NAME: isDev() ? Env.schema.string() : Env.schema.string.optional(),
 })
