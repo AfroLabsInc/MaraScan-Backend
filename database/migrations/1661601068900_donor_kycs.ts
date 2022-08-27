@@ -17,7 +17,7 @@ export default class extends BaseSchema {
 
       table.text('photoUrl')
 
-      table.enum('status', ['pending', 'approved', 'declined'])
+      table.enum('status', ['pending', 'approved', 'declined']).defaultTo('pending')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

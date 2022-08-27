@@ -73,7 +73,8 @@ export default class USSDService {
         // TODO: Create an Ethereum Account for the user
 
         // create a record for the beneficiary
-        await Beneficiary.create({
+        const beneficiary = await Beneficiary.create({
+          accountAddress: '0x222222222',
           firstName: textArray[1],
           lastName: textArray[2],
           mobile: data.phoneNumber,
@@ -83,7 +84,10 @@ export default class USSDService {
         })
 
         // submit/create a KYC record for them
-        await BeneficiaryKyc.create({ identificationNumber: textArray[6] })
+        await BeneficiaryKyc.create({
+          identificationNumber: textArray[6],
+          beneficiaryId: beneficiary.id,
+        })
 
         response = `END Congratulations, your details have been submitted and will be reviewd by our Admins`
       } else if (textArray[7] === '2') {
