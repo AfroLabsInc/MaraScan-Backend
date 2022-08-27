@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import OrganizationDonorProfile from './OrganizationDonorProfile'
 import IndividualDonorProfile from './IndividualDonorProfile'
+import DonorKyc from './DonorKyc'
 
 export default class Donor extends BaseModel {
   @column({ isPrimary: true })
@@ -12,6 +13,11 @@ export default class Donor extends BaseModel {
 
   @column()
   public donorType: string
+
+  @hasOne(() => DonorKyc, {
+    foreignKey: 'donorId',
+  })
+  public kyc: HasOne<typeof DonorKyc>
 
   @hasOne(() => OrganizationDonorProfile, {
     foreignKey: 'donorId',

@@ -1,17 +1,22 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'beneficiaryCategories'
+  protected tableName = 'beneficiary_kycs'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.string('title')
+      table
+        .integer('beneficiaryId')
+        .unsigned()
+        .references('id')
+        .inTable('beneficiaries')
+        .onDelete('CASCADE')
 
-      table.text('description')
+      table.text('identificationNumber')
 
-      table.text('coverImageurl')
+      table.enum('status', ['pending', 'approved', 'declined'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
