@@ -15,7 +15,7 @@ export default class extends BaseSchema {
 
       table.enum('type', ['governental', 'non-governmental'])
 
-      table.string('email')
+      table.string('email').unique()
 
       table.string('country')
 

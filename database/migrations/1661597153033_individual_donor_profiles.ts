@@ -13,7 +13,7 @@ export default class extends BaseSchema {
 
       table.string('lastName')
 
-      table.string('email')
+      table.string('email').unique()
 
       table.string('country')
 

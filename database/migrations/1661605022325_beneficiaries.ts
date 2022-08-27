@@ -14,13 +14,13 @@ export default class extends BaseSchema {
         .inTable('beneficiaryCategories')
         .onDelete('CASCADE')
 
-      table.text('accountAddress')
+      table.text('accountAddress').unique().notNullable()
 
       table.string('firstName')
 
       table.string('lastName')
 
-      table.string('mobile')
+      table.string('mobile').unique().notNullable()
 
       table.string('email')
 
