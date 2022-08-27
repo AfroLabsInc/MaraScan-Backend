@@ -38,7 +38,7 @@ export default class USSDService {
       }
     } else {
       if (textArray[0] === '1') {
-        response = await this.manageAccount(data)
+        response = await this.manageAccount(data, textArray, level)
       } else if (textArray[0] === '2') {
         response = await this.changeLanguage(data)
       } else if (textArray[0] === '3') {
@@ -76,6 +76,7 @@ export default class USSDService {
         await Beneficiary.create({
           firstName: textArray[1],
           lastName: textArray[2],
+          mobile: data.phoneNumber,
           country: textArray[3],
           region: textArray[4],
           address: textArray[5],
@@ -94,7 +95,22 @@ export default class USSDService {
 
     return response
   }
-  private static manageAccount(data: USSDDataType) {}
+  private static manageAccount(data: USSDDataType, textArray, level) {
+    let response
+    if (level === 1) {
+      response = `CON WHat would you like to check?
+        1. Account balance
+        2. Transfer money
+        3. Withdraw to M-Pesa
+        4. View Transaction History
+      `
+    } else if (level === 2) {
+      if (textArray[1] === '1') {
+        // TODO: Get and Process Account Balance
+        response = `END Your Account Balance is 3000 KES`
+      }
+    }
+  }
   private static changeLanguage(data: USSDDataType) {}
   private static support(data: USSDDataType) {}
 }
