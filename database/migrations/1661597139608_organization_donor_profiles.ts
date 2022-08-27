@@ -25,6 +25,10 @@ export default class extends BaseSchema {
 
       table.text('addressTwo')
 
+      table.text('website')
+
+      table.json('socialHandles')
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

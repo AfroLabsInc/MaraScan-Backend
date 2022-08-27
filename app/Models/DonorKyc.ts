@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Donor from './Donor'
 
-export default class OrganizationDonorProfile extends BaseModel {
+export default class DonorKyc extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -10,34 +10,19 @@ export default class OrganizationDonorProfile extends BaseModel {
   public donorId: number
 
   @column()
-  public name: string
+  public donorType: string
 
   @column()
-  public description: string
+  public organizationIdentificationNumber: string
 
   @column()
-  public type: string
+  public idImageUrl: string
 
   @column()
-  public email: string
+  public photoUrl: string
 
   @column()
-  public country: string
-
-  @column()
-  public region: string
-
-  @column()
-  public addressOne: string
-
-  @column()
-  public addressTwo: string
-
-  @column()
-  public website: string
-
-  @column()
-  public socialHandles: object
+  public status: string
 
   @belongsTo(() => Donor, {
     foreignKey: 'donorId',
