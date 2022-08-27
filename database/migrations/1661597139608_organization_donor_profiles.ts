@@ -1,11 +1,29 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'organization_donor_profiles'
+  protected tableName = 'organizationDonorProfiles'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+
+      table.integer('donorId').unsigned().references('id').inTable('donors').onDelete('CASCADE')
+
+      table.string('name')
+
+      table.string('description')
+
+      table.enum('type', ['governental', 'non-governmental'])
+
+      table.string('email')
+
+      table.string('country')
+
+      table.string('region')
+
+      table.text('addressOne')
+
+      table.text('addressTwo')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -15,7 +33,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

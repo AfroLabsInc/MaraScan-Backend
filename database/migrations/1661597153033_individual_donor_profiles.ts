@@ -19,6 +19,8 @@ export default class extends BaseSchema {
 
       table.string('region')
 
+      table.text('address')
+
       table.string('occupation')
 
       /**
