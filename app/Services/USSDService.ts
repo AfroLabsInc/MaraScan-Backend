@@ -112,7 +112,8 @@ export default class USSDService {
         // TODO: Handle Transfer Logic
         response = ``
       } else if (textArray[1] === '3') {
-        response = ``
+        // TODO: Handle Withdrawal Logic
+        response = `END Money withdrawn to ${data.phoneNumber}`
       } else if (textArray[1] === '4') {
         response = ``
       }
@@ -120,6 +121,10 @@ export default class USSDService {
 
     return response
   }
-  private static changeLanguage(data: USSDDataType) {}
-  private static support(data: USSDDataType) {}
+  private static changeLanguage(data: USSDDataType) {
+    console.log(data)
+  }
+  private static support(data: USSDDataType) {
+    console.log(data)
+  }
 }
