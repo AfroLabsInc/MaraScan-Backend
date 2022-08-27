@@ -108,8 +108,17 @@ export default class USSDService {
       if (textArray[1] === '1') {
         // TODO: Get and Process Account Balance
         response = `END Your Account Balance is 3000 KES`
+      } else if (textArray[1] === '2') {
+        // TODO: Handle Transfer Logic
+        response = ``
+      } else if (textArray[1] === '3') {
+        response = ``
+      } else if (textArray[1] === '4') {
+        response = ``
       }
     }
+
+    return response
   }
   private static changeLanguage(data: USSDDataType) {}
   private static support(data: USSDDataType) {}
