@@ -2,26 +2,53 @@ import { USSDDataType } from 'App/Types'
 import Beneficiary from 'App/Models/Beneficiary'
 import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
+import UssdUser from 'App/Models/UssdUser'
 
 export default class USSDService {
   public static async entry(data: USSDDataType) {
+    const ussdUser = await UssdUser.updateOrCreate(
+      { mobile: data.phoneNumber },
+      { mobile: data.phoneNumber, lastSessionId: data.sessionId }
+    )
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+    let response
 
     if (!beneficiary) {
-      return `CON Welcome to MaraScan. Reply with
+      if (ussdUser.language === 'english') {
+        response = `CON Welcome to MaraScan. Reply with
         1. Register
         2. Change Language
         3. Help and Support
       `
+      } else if (ussdUser.language === 'swahili') {
+        response = `CON Welcome to MaraScan. Reply with
+        1. Register
+        2. Change Language
+        3. Help and Support
+      `
+      }
     } else {
-      return `CON Welcome back ${beneficiary.firstName}, reply with
+      if (ussdUser.language === 'english') {
+        response = `CON Welcome back ${beneficiary.firstName}, reply with
         1. Manage Account
         2. Change Language
         3. Help and Support
       `
+      } else if (ussdUser.language === 'swahili') {
+        response = `CON Welcome back ${beneficiary.firstName}, reply with
+        1. Manage Account
+        2. Change Language
+        3. Help and Support
+      `
+      }
     }
+    return response
   }
   public static async continuation(data: USSDDataType) {
+    const ussdUser = await UssdUser.updateOrCreate(
+      { mobile: data.phoneNumber },
+      { mobile: data.phoneNumber, lastSessionId: data.sessionId }
+    )
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
     const level = extractText(data.text).length
     const textArray = extractText(data.text)
@@ -30,17 +57,17 @@ export default class USSDService {
 
     if (!beneficiary) {
       if (textArray[0] === '1') {
-        response = await this.register(data, textArray, level)
+        response = await this.register(data, textArray, level, ussdUser)
       } else if (textArray[0] === '2') {
-        response = await this.changeLanguage(data, textArray, level)
+        response = await this.changeLanguage(textArray, level, ussdUser)
       } else if (textArray[0] === '3') {
         response = await this.support(data)
       }
     } else {
       if (textArray[0] === '1') {
-        response = await this.manageAccount(data, textArray, level)
+        response = await this.manageAccount(data, textArray, level, ussdUser)
       } else if (textArray[0] === '2') {
-        response = await this.changeLanguage(data, textArray, level)
+        response = await this.changeLanguage(textArray, level, ussdUser)
       } else if (textArray[0] === '3') {
         response = await this.support(data)
       }
@@ -48,7 +75,7 @@ export default class USSDService {
 
     return response
   }
-  private static async register(data: USSDDataType, textArray, level) {
+  private static async register(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     let response
 
     if (level === 1) {
@@ -103,7 +130,7 @@ export default class USSDService {
 
     return response
   }
-  private static manageAccount(data: USSDDataType, textArray, level) {
+  private static manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     let response
     if (level === 1) {
       response = `CON What would you like to check?
@@ -129,8 +156,7 @@ export default class USSDService {
 
     return response
   }
-  private static async changeLanguage(data: USSDDataType, textArray, level) {
-    const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+  private static async changeLanguage(textArray, level, ussdUser: UssdUser) {
     let response
 
     if (level === 1) {
@@ -139,10 +165,16 @@ export default class USSDService {
         2. English
       `
     } else if (level === 2) {
-      if (beneficiary) {
-        // set language for session and user
-      } else {
-        // set language for session
+      if (textArray[1] === '1') {
+        ussdUser.language === 'english'
+        await ussdUser.save()
+
+        response = `END You have successfully Changed Your Language`
+      } else if (textArray[1] === '2') {
+        ussdUser.language === 'swahili'
+        await ussdUser.save()
+
+        response = `END You have successfully Changed Your Language`
       }
     }
     return response

@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, BelongsTo, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import BeneficiaryCategory from './BeneficiaryCategory'
 import BeneficiaryKyc from './BeneficiaryKyc'
+import UssdUser from './UssdUser'
 
 export default class Beneficiary extends BaseModel {
   @column({ isPrimary: true })
@@ -43,6 +44,11 @@ export default class Beneficiary extends BaseModel {
     foreignKey: 'beneficiaryId',
   })
   public kyc: HasOne<typeof BeneficiaryKyc>
+
+  @hasOne(() => UssdUser, {
+    foreignKey: 'beneficiaryId',
+  })
+  public ussdUser: HasOne<typeof UssdUser>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
