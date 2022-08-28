@@ -14,7 +14,7 @@ export default class USSDService {
         3. Help and Support
       `
     } else {
-      return `CON Welcome back ${beneficiary.firstName}, reply with?
+      return `CON Welcome back ${beneficiary.firstName}, reply with
         1. Manage Account
         2. Change Language
         3. Help and Support
@@ -74,7 +74,11 @@ export default class USSDService {
 
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
-          accountAddress: '0x222222222',
+          accountAddress: `0x2222${
+            Math.random().toString(36).substring(2, 5) +
+            Math.random().toString(36).substring(2, 5) +
+            Date.now()
+          }`,
           firstName: textArray[1],
           lastName: textArray[2],
           mobile: data.phoneNumber,
@@ -102,7 +106,7 @@ export default class USSDService {
   private static manageAccount(data: USSDDataType, textArray, level) {
     let response
     if (level === 1) {
-      response = `CON WHat would you like to check?
+      response = `CON What would you like to check?
         1. Account balance
         2. Transfer money
         3. Withdraw to M-Pesa
@@ -128,7 +132,15 @@ export default class USSDService {
   private static changeLanguage(data: USSDDataType) {
     console.log(data)
   }
-  private static support(data: USSDDataType) {
-    console.log(data)
+  private static async support(data: USSDDataType) {
+    const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+    let response
+
+    if (beneficiary) {
+      response = `END Thank you ${beneficiary.firstName} for reaching out to our Support, kindly dial - 090222222 or visit www.help.marascan.com`
+    } else {
+      response = `END Thank you for reaching out to our Support, kindly dial - 090222222 or visit www.help.marascan.com`
+    }
+    return response
   }
 }
