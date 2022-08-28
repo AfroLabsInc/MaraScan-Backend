@@ -32,7 +32,7 @@ export default class USSDService {
       if (textArray[0] === '1') {
         response = await this.register(data, textArray, level)
       } else if (textArray[0] === '2') {
-        response = await this.changeLanguage(data)
+        response = await this.changeLanguage(data, textArray, level)
       } else if (textArray[0] === '3') {
         response = await this.support(data)
       }
@@ -40,7 +40,7 @@ export default class USSDService {
       if (textArray[0] === '1') {
         response = await this.manageAccount(data, textArray, level)
       } else if (textArray[0] === '2') {
-        response = await this.changeLanguage(data)
+        response = await this.changeLanguage(data, textArray, level)
       } else if (textArray[0] === '3') {
         response = await this.support(data)
       }
@@ -129,8 +129,23 @@ export default class USSDService {
 
     return response
   }
-  private static changeLanguage(data: USSDDataType) {
-    console.log(data)
+  private static async changeLanguage(data: USSDDataType, textArray, level) {
+    const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+    let response
+
+    if (level === 1) {
+      response = `CON Select a Language, reply with
+        1. Swahili
+        2. English
+      `
+    } else if (level === 2) {
+      if (beneficiary) {
+        // set language for session and user
+      } else {
+        // set language for session
+      }
+    }
+    return response
   }
   private static async support(data: USSDDataType) {
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
