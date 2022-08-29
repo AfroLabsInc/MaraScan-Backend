@@ -4,6 +4,56 @@ import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
 
+const content = {
+  english: {
+    welcomeMsg: 'Welcome to MaraScan. Reply with',
+    welcomeBack: 'Welcome back',
+    register: 'Register',
+    changeLang: 'Change Language',
+    support: 'Help and Support',
+    selectLang: 'Select a Language, reply with',
+    firstName: 'Enter your first name',
+    lastName: 'Enter your last name (surname)',
+    country: 'Enter your country',
+    region: 'Enter your region',
+    address: 'Enter your address',
+    kId: 'Enter your Kenya ID Number',
+    formComplete: 'Thanks for Completing the form, reply with',
+    registerDone:
+      'Congratulations, your details have been submitted and will be reviewd by our Admins',
+    registerCancel:
+      "We're sorry that you couldn't proceed with the registration. We hope to have you again soon.",
+    manageAccMenu: 'What would you like to check?',
+    accBal: 'Account balance',
+    transferMoney: 'Transfer money',
+    withdrawToMpesa: 'Withdraw to M-Pesa',
+    viewHistory: 'View Transaction History',
+  },
+  swahili: {
+    welcomeMsg: 'Karibu MaraScan. Jibu na',
+    welcomeBack: 'Karibu tena',
+    register: 'Sajili',
+    changeLang: 'Badilisha Lugha',
+    support: 'Msaada na Usaidizi',
+    selectLang: 'Chagua Lugha, jibu na',
+    firstName: 'Ingiza jina lako la kwanza',
+    lastName: 'Andika jina lako la mwisho (jina la ukoo)',
+    country: 'Ingiza nchi yako',
+    region: 'Ingiza eneo lako',
+    address: 'Weka anwani yako',
+    kId: 'Weka Nambari yako ya Kitambulisho cha Kenya',
+    formComplete: 'Asante kwa Kujaza fomu, jibu na',
+    registerDone: 'Hongera, maelezo yako yamewasilishwa na yatakaguliwa na Wasimamizi wetu',
+    registerCancel:
+      'Tunasikitika kwamba hukuweza kuendelea na usajili. Tunatumai kuwa nawe tena hivi karibuni.',
+    manageAccMenu: 'Je, ungependa kuangalia nini?',
+    accBal: 'Salio la akaunti',
+    transferMoney: 'Kuhamisha fedha',
+    withdrawToMpesa: 'Toa pesa kwa M-Pesa',
+    viewHistory: 'Tazama Historia ya Muamala',
+  },
+}
+
 export default class USSDService {
   public static async entry(data: USSDDataType) {
     const ussdUser = await UssdUser.updateOrCreate(
@@ -14,33 +64,17 @@ export default class USSDService {
     let response
 
     if (!beneficiary) {
-      if (ussdUser.language === 'english') {
-        response = `CON Welcome to MaraScan. Reply with
-        1. Register
-        2. Change Language
-        3. Help and Support
+      response = `CON ${content[ussdUser.language].welcomeMsg}
+        1. ${content[ussdUser.language].register}
+        2. ${content[ussdUser.language].changeLang}
+        3. ${content[ussdUser.language].support}
       `
-      } else if (ussdUser.language === 'swahili') {
-        response = `CON Welcome to MaraScan. Reply with
-        1. Register
-        2. Change Language
-        3. Help and Support
-      `
-      }
     } else {
-      if (ussdUser.language === 'english') {
-        response = `CON Welcome back ${beneficiary.firstName}, reply with
-        1. Manage Account
-        2. Change Language
-        3. Help and Support
+      response = `CON ${content[ussdUser.language].welcomeBack} ${beneficiary.firstName}, reply with
+        1. ${content[ussdUser.language].manageAcc}
+        2. ${content[ussdUser.language].changeLang}
+        3. ${content[ussdUser.language].support}
       `
-      } else if (ussdUser.language === 'swahili') {
-        response = `CON Welcome back ${beneficiary.firstName}, reply with
-        1. Manage Account
-        2. Change Language
-        3. Help and Support
-      `
-      }
     }
     return response
   }
@@ -79,21 +113,21 @@ export default class USSDService {
     let response
 
     if (level === 1) {
-      response = `CON Enter your first name`
+      response = `CON ${content[ussdUser.language].firstName}`
     } else if (level === 2) {
-      response = `CON Enter your last name (surname)`
+      response = `CON ${content[ussdUser.language].lastName}`
     } else if (level === 3) {
-      response = `CON Enter your country`
+      response = `CON ${content[ussdUser.language].country}`
     } else if (level === 4) {
-      response = `CON Enter your region`
+      response = `CON ${content[ussdUser.language].region}`
     } else if (level === 5) {
-      response = `CON Enter your address`
+      response = `CON ${content[ussdUser.language].address}`
     } else if (level === 6) {
-      response = `CON Enter your Kenya ID Number`
+      response = `CON ${content[ussdUser.language].kId}`
     } else if (level === 7) {
-      response = `CON Thanks for Completing the form
-        1. Confirm Reg.
-        2. Cancel
+      response = `CON ${content[ussdUser.language].formComplete}
+        1. Confirm Registration.
+        2. Cancel Registration.
       `
     } else if (level === 8) {
       if (textArray[7] === '1') {
@@ -120,10 +154,9 @@ export default class USSDService {
           beneficiaryId: beneficiary.id,
         })
 
-        response = `END Congratulations, your details have been submitted and will be reviewd by our Admins`
+        response = `END ${content[ussdUser.language].registerDone}`
       } else if (textArray[7] === '2') {
-        response = `END We're sorry that you couldn't proceed with the registration.
-          We hope to have you again soon.
+        response = `END ${content[ussdUser.language].registerCancel}
         `
       }
     }
@@ -133,11 +166,11 @@ export default class USSDService {
   private static manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     let response
     if (level === 1) {
-      response = `CON What would you like to check?
-        1. Account balance
-        2. Transfer money
-        3. Withdraw to M-Pesa
-        4. View Transaction History
+      response = `CON ${content[ussdUser.language].manageAccMenu}
+        1. ${content[ussdUser.language].accBal}
+        2. ${content[ussdUser.language].transferMoney}
+        3. ${content[ussdUser.language].withdrawToMpesa}
+        4. ${content[ussdUser.language].viewHistory}
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
@@ -160,18 +193,18 @@ export default class USSDService {
     let response
 
     if (level === 1) {
-      response = `CON Select a Language, reply with
-        1. Swahili
-        2. English
+      response = `CON  ${content[ussdUser.language].selectLang}
+        1. English
+        2. Swahili
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
-        ussdUser.language === 'english'
+        ussdUser.language = 'english'
         await ussdUser.save()
 
         response = `END You have successfully Changed Your Language`
       } else if (textArray[1] === '2') {
-        ussdUser.language === 'swahili'
+        ussdUser.language = 'swahili'
         await ussdUser.save()
 
         response = `END You have successfully Changed Your Language`
