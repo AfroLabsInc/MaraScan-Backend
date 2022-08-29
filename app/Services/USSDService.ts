@@ -63,8 +63,8 @@ export default class USSDService {
       { mobile: data.phoneNumber, lastSessionId: data.sessionId }
     )
 
-    const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
     const ussdUser = await UssdUser.findByOrFail('mobile', data.phoneNumber)
+    const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
     let response
 
     if (!beneficiary) {
