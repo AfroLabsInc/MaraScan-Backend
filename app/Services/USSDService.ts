@@ -60,6 +60,9 @@ export default class USSDService {
       { mobile: data.phoneNumber },
       { mobile: data.phoneNumber, lastSessionId: data.sessionId }
     )
+    console.log(ussdUser)
+    console.log(content[ussdUser.language])
+    console.log(content[`${ussdUser.language}`])
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
     let response
 
