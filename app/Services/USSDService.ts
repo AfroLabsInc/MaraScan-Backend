@@ -58,12 +58,13 @@ const content = {
 
 export default class USSDService {
   public static async entry(data: USSDDataType) {
-    const ussdUser = await UssdUser.updateOrCreate(
+    await UssdUser.updateOrCreate(
       { mobile: data.phoneNumber },
-      { mobile: data.phoneNumber, lastSessionId: data.sessionId, language: 'english' }
+      { mobile: data.phoneNumber, lastSessionId: data.sessionId }
     )
 
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+    const ussdUser = await UssdUser.findByOrFail('mobile', data.phoneNumber)
     let response
 
     if (!beneficiary) {
