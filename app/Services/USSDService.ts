@@ -60,7 +60,7 @@ export default class USSDService {
   public static async entry(data: USSDDataType) {
     const ussdUser = await UssdUser.updateOrCreate(
       { mobile: data.phoneNumber },
-      { mobile: data.phoneNumber, lastSessionId: data.sessionId }
+      { mobile: data.phoneNumber, lastSessionId: data.sessionId, language: 'english' }
     )
 
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
