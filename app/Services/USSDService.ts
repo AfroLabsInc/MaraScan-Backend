@@ -9,6 +9,7 @@ const content = {
     welcomeMsg: 'Welcome to MaraScan. Reply with',
     welcomeBack: 'Welcome back',
     register: 'Register',
+    manageAcc: 'Manage Account',
     changeLang: 'Change Language',
     support: 'Help and Support',
     selectLang: 'Select a Language, reply with',
@@ -33,6 +34,7 @@ const content = {
     welcomeMsg: 'Karibu MaraScan. Jibu na',
     welcomeBack: 'Karibu tena',
     register: 'Sajili',
+    manageAcc: 'Dhibiti Akaunti',
     changeLang: 'Badilisha Lugha',
     support: 'Msaada na Usaidizi',
     selectLang: 'Chagua Lugha, jibu na',
@@ -60,9 +62,7 @@ export default class USSDService {
       { mobile: data.phoneNumber },
       { mobile: data.phoneNumber, lastSessionId: data.sessionId }
     )
-    console.log(ussdUser)
-    console.log(content[ussdUser.language])
-    console.log(content[`${ussdUser.language}`])
+
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
     let response
 
