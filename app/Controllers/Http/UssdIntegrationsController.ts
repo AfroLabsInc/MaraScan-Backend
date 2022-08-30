@@ -10,7 +10,7 @@ export default class UssdIntegrationsController {
 
     if (!text) {
       // This is the first request. Note how we start the response with CON
-      response = await USSDService.entry({ phoneNumber, text })
+      response = await USSDService.entry({ phoneNumber, text, sessionId })
     } else {
       response = await USSDService.continuation({ phoneNumber, text, sessionId, serviceCode })
     }
