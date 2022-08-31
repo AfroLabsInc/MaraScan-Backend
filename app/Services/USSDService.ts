@@ -150,6 +150,8 @@ export default class USSDService {
           region: textArray[4],
           address: textArray[5],
         })
+        ussdUser.beneficiaryId = beneficiary.id
+        await ussdUser.save()
 
         // submit/create a KYC record for them
         await BeneficiaryKyc.create({
@@ -178,7 +180,7 @@ export default class USSDService {
     } else if (level === 2) {
       if (textArray[1] === '1') {
         // Get and Process Account Balance
-        const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiary.id)
+        const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiaryId)
         const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
 
         response = `END Your Account Balance is ${convertFiatCurrencies(

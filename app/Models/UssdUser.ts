@@ -7,6 +7,9 @@ export default class UssdUser extends BaseModel {
   public id: number
 
   @column()
+  public beneficiaryId: number
+
+  @column()
   public mobile: string
 
   @column()
