@@ -14,7 +14,9 @@ export default class extends BaseSchema {
         .inTable('beneficiaryCategories')
         .onDelete('CASCADE')
 
-      table.text('accountAddress').unique().notNullable()
+      table.text('ethereumAccountAddress').unique().notNullable()
+
+      table.text('ethereumAccountPrivateKey').unique().notNullable()
 
       table.string('firstName')
 

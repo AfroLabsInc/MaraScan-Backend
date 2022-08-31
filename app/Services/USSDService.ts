@@ -139,7 +139,7 @@ export default class USSDService {
 
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
-          accountAddress: `0x2222${
+          ethereumAccountAddress: `0x2222${
             Math.random().toString(36).substring(2, 5) +
             Math.random().toString(36).substring(2, 5) +
             Date.now()

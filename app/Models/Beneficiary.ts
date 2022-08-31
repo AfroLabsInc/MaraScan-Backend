@@ -12,7 +12,10 @@ export default class Beneficiary extends BaseModel {
   public categoryId: number
 
   @column()
-  public accountAddress: string
+  public ethereumAccountAddress: string
+
+  @column()
+  public ethereumAccountPrivateKey: string
 
   @column()
   public firstName: string

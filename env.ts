@@ -34,4 +34,7 @@ export default Env.rules({
   PG_USER: isDev() ? Env.schema.string() : Env.schema.string.optional(),
   PG_PASSWORD: isDev() ? Env.schema.string() : Env.schema.string.optional(),
   PG_DB_NAME: isDev() ? Env.schema.string() : Env.schema.string.optional(),
+
+  ENCRYPTION_SECRET: Env.schema.string(),
+  RPC_PROVIDER_URL: Env.schema.string(),
 })
