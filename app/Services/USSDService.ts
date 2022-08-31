@@ -136,7 +136,7 @@ export default class USSDService {
       `
     } else if (level === 8) {
       if (textArray[7] === '1') {
-        // TODO: Create an Ethereum Account for the user
+        //Create an Ethereum Account for the user
         const account = await Web3Service.createBeneficiaryAccount()
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({

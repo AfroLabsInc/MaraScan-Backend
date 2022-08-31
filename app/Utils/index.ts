@@ -1,5 +1,29 @@
 import Cryptr from 'cryptr'
 import Env from '@ioc:Adonis/Core/Env'
+import CustomException from 'App/Exceptions/CustomException'
+
+import axios from 'axios'
+
+export const axiosClient = (
+  baseUrl: string,
+  authorization: string = '',
+  contentType: string = 'application/json'
+) =>
+  axios.create({
+    baseURL: baseUrl,
+    headers: {
+      'Authorization': authorization,
+      'Content-Type': contentType,
+    },
+  })
+
+export const errorHandler = (error: any) => {
+  // console.log(error.response)
+  throw new CustomException(
+    error?.response?.statusText ?? error.message ?? 'Unknown',
+    error?.response?.status ?? error.status ?? 400
+  )
+}
 
 export const extractText = (text: string) => {
   return text.split('*')
