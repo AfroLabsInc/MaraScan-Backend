@@ -1,6 +1,7 @@
 import Cryptr from 'cryptr'
 import Env from '@ioc:Adonis/Core/Env'
 import CustomException from 'App/Exceptions/CustomException'
+import cc from 'currency-converter-lt'
 
 import axios from 'axios'
 
@@ -43,4 +44,16 @@ export const decryptText = (encryptedString: string) => {
   const decryptedString = cryptr.decrypt(encryptedString)
 
   return decryptedString
+}
+
+export const convertFiatCurrencies = async (from: string, to: string, amount: number) => {
+  // convert the currency
+  let currencyConverter = new cc({
+    from: from,
+    to: to,
+    amount: amount,
+  })
+  const converted = await currencyConverter.convert()
+
+  return converted
 }

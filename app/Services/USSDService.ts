@@ -1,9 +1,10 @@
 import { USSDDataType } from 'App/Types'
 import Beneficiary from 'App/Models/Beneficiary'
-import { extractText } from 'App/Utils'
+import { convertFiatCurrencies, extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
 import Web3Service from './Web3Service'
+import CoinMarketCapService from './CoinMarketCapSevice'
 
 const content = {
   english: {
@@ -165,7 +166,7 @@ export default class USSDService {
 
     return response
   }
-  private static manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
+  private static async manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     let response
     if (level === 1) {
       response = `CON ${content[ussdUser.language].manageAccMenu}
@@ -176,8 +177,14 @@ export default class USSDService {
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
-        // TODO: Get and Process Account Balance
-        response = `END Your Account Balance is 3000 KES`
+        // Get and Process Account Balance
+        const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiary.id)
+        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
+        response = `END Your Account Balance is ${convertFiatCurrencies(
+          'USD',
+          'KES',
+          usdBalance
+        )} KES`
       } else if (textArray[1] === '2') {
         // TODO: Handle Transfer Logic
         response = ``
