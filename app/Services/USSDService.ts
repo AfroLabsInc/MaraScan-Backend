@@ -180,6 +180,7 @@ export default class USSDService {
         // Get and Process Account Balance
         const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiary.id)
         const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
+
         response = `END Your Account Balance is ${convertFiatCurrencies(
           'USD',
           'KES',
