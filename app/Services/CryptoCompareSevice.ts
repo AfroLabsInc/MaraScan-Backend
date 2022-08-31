@@ -8,9 +8,14 @@ export default class CryptoCompareService {
       tsyms: 'USD',
     }
     try {
-      const response = axiosClient('https://min-api.cryptocompare.com', `Apikey ${}`).get('/data/price', {
+      const response = await axiosClient(
+        Env.get('CRYPTO_COMPARE_API_BASE_URL'),
+        `Apikey ${Env.get('CRYPTO_COMPARE_API_KEY')}`
+      ).get('/data/price', {
         params,
       })
+
+      return response.data
     } catch (error) {
       errorHandler(error)
     }
