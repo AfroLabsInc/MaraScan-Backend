@@ -3,6 +3,7 @@ import Beneficiary from 'App/Models/Beneficiary'
 import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
+import Web3Service from './Web3Service'
 
 const content = {
   english: {
@@ -136,14 +137,11 @@ export default class USSDService {
     } else if (level === 8) {
       if (textArray[7] === '1') {
         // TODO: Create an Ethereum Account for the user
-
+        const account = await Web3Service.createBeneficiaryAccount()
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
-          ethereumAccountAddress: `0x2222${
-            Math.random().toString(36).substring(2, 5) +
-            Math.random().toString(36).substring(2, 5) +
-            Date.now()
-          }`,
+          ethereumAccountAddress: account.address,
+          ethereumAccountPrivateKey: account.privateKey,
           firstName: textArray[1],
           lastName: textArray[2],
           mobile: data.phoneNumber,

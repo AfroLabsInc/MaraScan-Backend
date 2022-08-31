@@ -1,8 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, BelongsTo, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  belongsTo,
+  BelongsTo,
+  column,
+  hasOne,
+  HasOne,
+  beforeSave,
+} from '@ioc:Adonis/Lucid/Orm'
 import BeneficiaryCategory from './BeneficiaryCategory'
 import BeneficiaryKyc from './BeneficiaryKyc'
 import UssdUser from './UssdUser'
+import { encryptText } from 'App/Utils'
 
 export default class Beneficiary extends BaseModel {
   @column({ isPrimary: true })
@@ -58,4 +67,13 @@ export default class Beneficiary extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeSave()
+  public static async encryptPrivateKey(beneficiary: Beneficiary) {
+    if (beneficiary.$dirty.ethereumAccountPrivateKey) {
+      beneficiary.ethereumAccountPrivateKey = await encryptText(
+        beneficiary.ethereumAccountPrivateKey
+      )
+    }
+  }
 }
