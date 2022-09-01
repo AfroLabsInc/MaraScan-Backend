@@ -1,6 +1,6 @@
 import { USSDDataType } from 'App/Types'
 import Beneficiary from 'App/Models/Beneficiary'
-import { convertFiatCurrencies, extractText } from 'App/Utils'
+import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
 import Web3Service from './Web3Service'
@@ -183,13 +183,12 @@ export default class USSDService {
       if (textArray[1] === '1') {
         // Get and Process Account Balance
         const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiaryId)
-        let kesBalance = 0.0
+        let balance = 0.0
         if (etherBalance !== 0) {
-          const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', etherBalance)
-          kesBalance = await convertFiatCurrencies('USD', 'KES', usdBalance)
+          balance = await CoinMarketCapService.getKESValue('ETH', etherBalance)
         }
 
-        response = `END Your Account Balance is ${kesBalance} KES`
+        response = `END Your Account Balance is ${balance.toFixed(2)} KES`
       } else if (textArray[1] === '2') {
         // TODO: Handle Transfer Logic
         response = ``
