@@ -180,6 +180,7 @@ export default class USSDService {
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
+        console.log(beneficiary.ethereumAccountBalance)
         // Get and Process Account Balance
         const usdBalance = await CoinMarketCapService.getUSDTValue(
           'ETH',
