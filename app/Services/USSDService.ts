@@ -139,6 +139,8 @@ export default class USSDService {
       if (textArray[7] === '1') {
         //Create an Ethereum Account for the user
         const account = await Web3Service.createBeneficiaryAccount()
+
+        console.log(account.address)
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
           ethereumAccountAddress: account.address,
