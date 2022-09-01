@@ -27,6 +27,9 @@ export default class Beneficiary extends BaseModel {
   public ethereumAccountPrivateKey: string
 
   @column()
+  public ethereumAccountBalance: number
+
+  @column()
   public firstName: string
 
   @column()
