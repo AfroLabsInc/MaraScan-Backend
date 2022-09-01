@@ -179,11 +179,10 @@ export default class USSDService {
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
-        console.log(ussdUser.beneficiaryId)
         // Get and Process Account Balance
         const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiaryId)
-        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
         console.log(etherBalance)
+        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
         console.log(usdBalance)
 
         response = `END Your Account Balance is ${await convertFiatCurrencies(
