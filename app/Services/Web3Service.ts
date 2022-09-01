@@ -16,9 +16,11 @@ class Web3Service {
   public async checkBeneficiaryBalance(beneficiaryId: number) {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
 
-    const balance = await this.web3.eth.getBalance(beneficiary.ethereumAccountAddress)
+    const weiBalance = await this.web3.eth.getBalance(beneficiary.ethereumAccountAddress)
 
-    return this.web3.utils.fromWei(balance, 'ether')
+    const etherBalance = await this.web3.utils.fromWei(weiBalance, 'ether')
+
+    return Number(etherBalance)
   }
 }
 
