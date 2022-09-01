@@ -183,15 +183,13 @@ export default class USSDService {
       if (textArray[1] === '1') {
         // Get and Process Account Balance
         const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiaryId)
-        console.log(etherBalance)
-        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', Number(etherBalance))
-        console.log(usdBalance)
+        let kesBalance = 0.0
+        if (etherBalance !== 0) {
+          const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', etherBalance)
+          kesBalance = await convertFiatCurrencies('USD', 'KES', usdBalance)
+        }
 
-        response = `END Your Account Balance is ${await convertFiatCurrencies(
-          'USD',
-          'KES',
-          usdBalance
-        )} KES`
+        response = `END Your Account Balance is ${kesBalance} KES`
       } else if (textArray[1] === '2') {
         // TODO: Handle Transfer Logic
         response = ``
