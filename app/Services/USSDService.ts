@@ -169,6 +169,7 @@ export default class USSDService {
     return response
   }
   private static async manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
+    const beneficiary = await Beneficiary.findByOrFail('id', ussdUser.beneficiaryId)
     let response
     if (level === 1) {
       response = `CON ${content[ussdUser.language].manageAccMenu}
@@ -180,8 +181,10 @@ export default class USSDService {
     } else if (level === 2) {
       if (textArray[1] === '1') {
         // Get and Process Account Balance
-        const etherBalance = ussdUser.beneficiary.ethereumAccountBalance
-        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', etherBalance)
+        const usdBalance = await CoinMarketCapService.getUSDTValue(
+          'ETH',
+          beneficiary.ethereumAccountBalance
+        )
         console.log(usdBalance)
 
         response = `END Your Account Balance is ${await convertFiatCurrencies(
