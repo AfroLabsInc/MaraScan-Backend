@@ -18,8 +18,6 @@ export default class extends BaseSchema {
 
       table.text('ethereumAccountPrivateKey').unique().notNullable()
 
-      table.float('ethereumAccountBalance').defaultTo(0.0)
-
       table.string('firstName')
 
       table.string('lastName')
