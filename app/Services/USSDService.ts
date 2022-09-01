@@ -182,10 +182,7 @@ export default class USSDService {
       if (textArray[1] === '1') {
         console.log(beneficiary.ethereumAccountBalance)
         // Get and Process Account Balance
-        const usdBalance = await CoinMarketCapService.getUSDTValue(
-          'ETH',
-          beneficiary.ethereumAccountBalance
-        )
+        const usdBalance = await CoinMarketCapService.getUSDTValue('ETH', 0)
         console.log(usdBalance)
 
         response = `END Your Account Balance is ${await convertFiatCurrencies(
