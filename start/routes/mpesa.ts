@@ -13,5 +13,5 @@ export default () => {
 
       Route.any('result', 'MpesaIntegrationsController.b2cResultHandler')
     }).prefix('business-to-customer')
-  }).prefix('mpesa/callbacks')
+  }).prefix('callbacks')
 }
