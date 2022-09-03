@@ -13,10 +13,6 @@ export default class extends BaseSchema {
 
       table.text('organizationIdentificationNumber')
 
-      table.text('idImageUrl')
-
-      table.text('photoUrl')
-
       table.enum('status', ['pending', 'approved', 'declined']).defaultTo('pending')
 
       /**

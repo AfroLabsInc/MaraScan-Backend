@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Donor from './Donor'
+import Image from './Image'
 
 export default class DonorKyc extends BaseModel {
   @column({ isPrimary: true })
@@ -16,10 +17,10 @@ export default class DonorKyc extends BaseModel {
   public organizationIdentificationNumber: string
 
   @column()
-  public idImageUrl: string
+  public idCardImageId: number
 
   @column()
-  public photoUrl: string
+  public photoId: number
 
   @column()
   public status: string
@@ -28,6 +29,16 @@ export default class DonorKyc extends BaseModel {
     foreignKey: 'donorId',
   })
   public donor: BelongsTo<typeof Donor>
+
+  @belongsTo(() => Image, {
+    foreignKey: 'idCardImageId',
+  })
+  public idCard: BelongsTo<typeof Image>
+
+  @belongsTo(() => Image, {
+    foreignKey: 'photoId',
+  })
+  public photo: BelongsTo<typeof Image>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
