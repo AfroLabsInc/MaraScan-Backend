@@ -5,7 +5,10 @@ import DonorValidator from 'App/Validators/DonorValidator'
 export default class DonorsController {
   public async index({}: HttpContextContract) {
     const donors = await Donor.query()
-      .preload('kyc')
+      .preload('kyc', (query) => {
+        query.preload('idCard')
+        query.preload('photo')
+      })
       .preload('individualProfile')
       .preload('organizationProfile')
 
@@ -33,7 +36,30 @@ export default class DonorsController {
 
     const donor = await Donor.query()
       .where('id', donorId)
-      .preload('kyc')
+      .preload('kyc', (query) => {
+        query.preload('idCard')
+        query.preload('photo')
+      })
+      .preload('individualProfile')
+      .preload('organizationProfile')
+      .firstOrFail()
+
+    return {
+      status: 200,
+      message: 'Donor Details Fetched Successfully',
+      data: donor,
+    }
+  }
+
+  public async showByAddress({ params }: HttpContextContract) {
+    const accountAddress: string = params.account_address
+
+    const donor = await Donor.query()
+      .where('accountAddress', accountAddress)
+      .preload('kyc', (query) => {
+        query.preload('idCard')
+        query.preload('photo')
+      })
       .preload('individualProfile')
       .preload('organizationProfile')
       .firstOrFail()

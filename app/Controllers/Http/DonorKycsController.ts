@@ -31,7 +31,7 @@ export default class DonorKycsController {
       const photo = await this.saveImage(payload.photo!, donor.accountAddress)
       const photoId = await (await Image.create({ ...photo })).id
 
-      await DonorKyc.create({ donorId, photoId, idCardImageId })
+      await DonorKyc.create({ donorId, photoId, idCardImageId, donorType: payload.donorType })
     } else {
       await DonorKyc.create({ ...payload, donorId })
     }
