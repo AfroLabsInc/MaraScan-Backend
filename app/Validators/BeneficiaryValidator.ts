@@ -37,6 +37,16 @@ class BeneficiaryValidator {
       messages,
     })
   }
+
+  public submitKyc(payload) {
+    return validator.validate({
+      schema: schema.create({
+        identificationNumber: schema.string(),
+      }),
+      data: payload,
+      messages,
+    })
+  }
 }
 
 export default new BeneficiaryValidator()

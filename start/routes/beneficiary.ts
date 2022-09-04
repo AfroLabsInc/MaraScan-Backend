@@ -6,6 +6,6 @@ export default () => {
 
     Route.get('beneficiaries/address/:account_address', 'BeneficiariesController.showByAddress')
 
-    Route.post('beneficiaries/:beneficiary_id/kyc', 'DonorKycsController.store')
+    Route.post('beneficiaries/:beneficiary_id/kyc', 'BeneficiaryKycsController.store')
   })
 }
