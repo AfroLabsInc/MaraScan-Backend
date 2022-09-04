@@ -11,6 +11,8 @@ export default class extends BaseSchema {
 
       table.enum('donorType', ['individual', 'organization'])
 
+      table.index(['accountAddress'])
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

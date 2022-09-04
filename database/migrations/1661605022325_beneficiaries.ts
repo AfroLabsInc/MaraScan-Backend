@@ -32,6 +32,8 @@ export default class extends BaseSchema {
 
       table.text('address')
 
+      table.index(['ethereumAccountAddress', 'firstName', 'lastName', 'mobile'])
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

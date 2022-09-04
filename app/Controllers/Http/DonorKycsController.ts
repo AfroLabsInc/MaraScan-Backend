@@ -15,13 +15,13 @@ export default class DonorKycsController {
     return ImageService.uploadImage({ tmpPath, folder, fileName })
   }
   public async store({ request, params }: HttpContextContract) {
-    const donorId: number = params.donorId
+    const donorId: number = params.donor_id
     const donor = await Donor.findOrFail(donorId)
 
     const payload = await DonorValidator.submitKyc({
       ...request.all(),
       idCardImage: request.file('idCardImage'),
-      photo: request.file('idCardImage'),
+      photo: request.file('photo'),
     })
 
     if (payload.donorType === 'individual') {

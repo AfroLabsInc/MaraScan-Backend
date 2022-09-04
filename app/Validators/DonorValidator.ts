@@ -20,11 +20,11 @@ class DonorValidator {
         organizationIdentificationNumber: schema.string.optional(),
         donorType: schema.enum(['individual', 'organization']),
         idCardImage: schema.file.optional({
-          size: '10mb',
+          size: '20mb',
           extnames: ['jpg', 'png', 'jpeg'],
         }),
         photo: schema.file.optional({
-          size: '10mb',
+          size: '20mb',
           extnames: ['jpg', 'png', 'jpeg'],
         }),
       }),
