@@ -20,7 +20,7 @@ export default class BeneficiariesController {
   public async show({ params }: HttpContextContract) {
     const beneficiaryId: number = params.beneficiaryId
 
-    const beneficiary = await Beneficiary.query().where('id', beneficiaryId)
+    const beneficiary = await Beneficiary.query().where('id', beneficiaryId).firstOrFail()
 
     return {
       status: 200,
@@ -32,7 +32,7 @@ export default class BeneficiariesController {
   public async showByAddress({ params }: HttpContextContract) {
     const accountAddress: string = params.account_address
 
-    const beneficiary = await Beneficiary.query().where('accountAddress', accountAddress)
+    const beneficiary = await Beneficiary.query().where('accountAddress', accountAddress).first()
 
     return {
       status: 200,

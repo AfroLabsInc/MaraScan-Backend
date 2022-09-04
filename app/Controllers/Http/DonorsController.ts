@@ -62,7 +62,7 @@ export default class DonorsController {
       })
       .preload('individualProfile')
       .preload('organizationProfile')
-      .firstOrFail()
+      .first()
 
     return {
       status: 200,

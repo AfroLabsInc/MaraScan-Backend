@@ -20,18 +20,28 @@ export default class DonorKycsController {
 
     const payload = await DonorValidator.submitKyc({
       ...request.all(),
-      idCardImage: request.file('idCardImage'),
+      idCardFrontImage: request.file('idCardFrontImage'),
+      idCardBackImage: request.file('idCardBackImage'),
       photo: request.file('photo'),
     })
 
     if (payload.donorType === 'individual') {
-      const idCard = await this.saveImage(payload.idCardImage!, donor.accountAddress)
-      const idCardImageId = await (await Image.create({ ...idCard })).id
+      const idCardFront = await this.saveImage(payload.idCardFrontImage!, donor.accountAddress)
+      const idCardFrontImageId = await (await Image.create({ ...idCardFront })).id
+
+      const idCardBack = await this.saveImage(payload.idCardBackImage!, donor.accountAddress)
+      const idCardBackImageId = await (await Image.create({ ...idCardBack })).id
 
       const photo = await this.saveImage(payload.photo!, donor.accountAddress)
       const photoId = await (await Image.create({ ...photo })).id
 
-      await DonorKyc.create({ donorId, photoId, idCardImageId, donorType: payload.donorType })
+      await DonorKyc.create({
+        donorId,
+        photoId,
+        idCardFrontImageId,
+        idCardBackImageId,
+        donorType: payload.donorType,
+      })
     } else {
       await DonorKyc.create({ ...payload, donorId })
     }

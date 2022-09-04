@@ -19,7 +19,11 @@ class DonorValidator {
       schema: schema.create({
         organizationIdentificationNumber: schema.string.optional(),
         donorType: schema.enum(['individual', 'organization']),
-        idCardImage: schema.file.optional({
+        idCardFrontImage: schema.file.optional({
+          size: '20mb',
+          extnames: ['jpg', 'png', 'jpeg'],
+        }),
+        idCardBackImage: schema.file.optional({
           size: '20mb',
           extnames: ['jpg', 'png', 'jpeg'],
         }),

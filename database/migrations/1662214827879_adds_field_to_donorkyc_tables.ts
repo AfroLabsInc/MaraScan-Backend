@@ -6,7 +6,14 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.alterTable(this.tableName, (table) => {
       table
-        .integer('idCardImageId')
+        .integer('idCardFrontImageId')
+        .unsigned()
+        .references('id')
+        .inTable('images')
+        .onDelete('CASCADE')
+
+      table
+        .integer('idCardBackImageId')
         .unsigned()
         .references('id')
         .inTable('images')
@@ -18,7 +25,7 @@ export default class extends BaseSchema {
 
   public async down() {
     this.schema.alterTable(this.tableName, (table) => {
-      table.dropColumns('photoId', 'idCardImageId')
+      table.dropColumns('photoId', 'idCardFrontImageId', 'idCardBackImageId')
     })
   }
 }

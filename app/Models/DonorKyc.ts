@@ -17,7 +17,10 @@ export default class DonorKyc extends BaseModel {
   public organizationIdentificationNumber: string
 
   @column()
-  public idCardImageId: number
+  public idCardFrontImageId: number
+
+  @column()
+  public idCardBackImageId: number
 
   @column()
   public photoId: number
@@ -31,9 +34,14 @@ export default class DonorKyc extends BaseModel {
   public donor: BelongsTo<typeof Donor>
 
   @belongsTo(() => Image, {
-    foreignKey: 'idCardImageId',
+    foreignKey: 'idCardFrontImageId',
   })
-  public idCard: BelongsTo<typeof Image>
+  public idCardFront: BelongsTo<typeof Image>
+
+  @belongsTo(() => Image, {
+    foreignKey: 'idCardBackImageId',
+  })
+  public idCardBack: BelongsTo<typeof Image>
 
   @belongsTo(() => Image, {
     foreignKey: 'photoId',
