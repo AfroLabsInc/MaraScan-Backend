@@ -6,7 +6,8 @@ export default class DonorsController {
   public async index({}: HttpContextContract) {
     const donors = await Donor.query()
       .preload('kyc', (query) => {
-        query.preload('idCard')
+        query.preload('idCardFront')
+        query.preload('idCardBack')
         query.preload('photo')
       })
       .preload('individualProfile')
@@ -37,7 +38,8 @@ export default class DonorsController {
     const donor = await Donor.query()
       .where('id', donorId)
       .preload('kyc', (query) => {
-        query.preload('idCard')
+        query.preload('idCardFront')
+        query.preload('idCardBack')
         query.preload('photo')
       })
       .preload('individualProfile')
@@ -57,7 +59,8 @@ export default class DonorsController {
     const donor = await Donor.query()
       .where('accountAddress', accountAddress)
       .preload('kyc', (query) => {
-        query.preload('idCard')
+        query.preload('idCardFront')
+        query.preload('idCardBack')
         query.preload('photo')
       })
       .preload('individualProfile')
