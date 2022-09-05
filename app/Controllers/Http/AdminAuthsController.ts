@@ -10,11 +10,11 @@ export default class AdminAuthsController {
     })
 
     return {
-      status: true,
+      status: 200,
       message: 'Admin Login was successful',
       data: {
         token: token.token,
-        beneficiary: token.user,
+        admin: token.user,
       },
     }
   }

@@ -12,7 +12,7 @@ export default class BeneficiaryAuthsController {
     })
 
     return {
-      status: true,
+      status: 200,
       message: 'Beneficiary Login was successful',
       data: {
         token: token.token,
@@ -48,6 +48,6 @@ export default class BeneficiaryAuthsController {
 
   public async logout({ auth }: HttpContextContract) {
     await auth.logout()
-    return { status: true, message: 'Logout was successful' }
+    return { status: 200, message: 'Logout was successful' }
   }
 }
