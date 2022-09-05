@@ -11,11 +11,13 @@ export default class extends BaseSchema {
 
       table.string('email')
 
-      table.string('password')
+      table.text('password')
 
       table.string('role')
 
       table.boolean('isSuperAdmin')
+
+      table.index(['name'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

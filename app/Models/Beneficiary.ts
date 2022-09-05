@@ -12,6 +12,7 @@ import BeneficiaryCategory from './BeneficiaryCategory'
 import BeneficiaryKyc from './BeneficiaryKyc'
 import UssdUser from './UssdUser'
 import { encryptText } from 'App/Utils'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class Beneficiary extends BaseModel {
   @column({ isPrimary: true })
@@ -47,6 +48,9 @@ export default class Beneficiary extends BaseModel {
   @column()
   public address: string
 
+  @column()
+  public password: string
+
   @belongsTo(() => BeneficiaryCategory, {
     foreignKey: 'categoryId',
   })
@@ -74,6 +78,13 @@ export default class Beneficiary extends BaseModel {
       beneficiary.ethereumAccountPrivateKey = await encryptText(
         beneficiary.ethereumAccountPrivateKey
       )
+    }
+  }
+
+  @beforeSave()
+  public static async hashPassword(beneficiary: Beneficiary) {
+    if (beneficiary.$dirty.password) {
+      beneficiary.password = await Hash.make(beneficiary.password)
     }
   }
 }

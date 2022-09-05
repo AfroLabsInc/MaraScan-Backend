@@ -32,6 +32,8 @@ export default class extends BaseSchema {
 
       table.text('address')
 
+      table.text('password')
+
       table.index(['ethereumAccountAddress', 'firstName', 'lastName', 'mobile'])
 
       /**

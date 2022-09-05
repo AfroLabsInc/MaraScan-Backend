@@ -15,6 +15,7 @@ class BeneficiaryValidator {
         country: schema.string({ trim: true }),
         region: schema.string({ trim: true }),
         address: schema.string({ trim: true }),
+        password: schema.string({ trim: true }),
       }),
       data: payload,
       messages,
@@ -32,6 +33,18 @@ class BeneficiaryValidator {
         country: schema.string.optional({ trim: true }),
         region: schema.string.optional({ trim: true }),
         address: schema.string.optional({ trim: true }),
+        password: schema.string.optional({ trim: true }),
+      }),
+      data: payload,
+      messages,
+    })
+  }
+
+  public login(payload) {
+    return validator.validate({
+      schema: schema.create({
+        mobile: schema.string({ trim: true }),
+        password: schema.string({ trim: true }),
       }),
       data: payload,
       messages,
