@@ -19,11 +19,12 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import { ussdRoutes, mpesaRoutes, donorRoutes, authRoutes } from './routes/index'
+import { ussdRoutes, mpesaRoutes, donorRoutes, authRoutes, beneficiaryRoutes } from './routes/index'
 
 Route.group(() => {
   authRoutes()
   ussdRoutes()
   mpesaRoutes()
   donorRoutes()
+  beneficiaryRoutes()
 }).prefix('api/v1')
