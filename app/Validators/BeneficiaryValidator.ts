@@ -43,7 +43,10 @@ class BeneficiaryValidator {
   public login(payload) {
     return validator.validate({
       schema: schema.create({
-        mobile: schema.string({ trim: true }),
+        mobile: schema.string({ trim: true }, [
+          rules.mobile(),
+          rules.exists({ table: 'beneficiaries', column: 'mobile' }),
+        ]),
         password: schema.string({ trim: true }),
       }),
       data: payload,

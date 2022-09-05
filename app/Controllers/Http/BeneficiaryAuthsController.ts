@@ -13,7 +13,7 @@ export default class BeneficiaryAuthsController {
 
     return {
       status: true,
-      message: 'Login was successful',
+      message: 'Beneficiary Login was successful',
       data: {
         token: token.token,
         beneficiary: token.user,

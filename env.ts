@@ -35,6 +35,9 @@ export default Env.rules({
   PG_PASSWORD: isDev() ? Env.schema.string() : Env.schema.string.optional(),
   PG_DB_NAME: isDev() ? Env.schema.string() : Env.schema.string.optional(),
 
+  SUPER_ADMIN_EMAIL: Env.schema.string(),
+  SUPER_ADMIN_PASSWORD: Env.schema.string(),
+
   ENCRYPTION_SECRET: Env.schema.string(),
   RPC_PROVIDER_URL: Env.schema.string(),
 
