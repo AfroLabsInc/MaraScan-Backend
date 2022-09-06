@@ -15,7 +15,7 @@ export default class BeneficiaryCategoriesController {
   }
 
   public async index({}: HttpContextContract) {
-    const categories = BeneficiaryCategory.query().preload('coverImage')
+    const categories = await BeneficiaryCategory.query().preload('coverImage')
 
     return {
       status: 200,
@@ -49,7 +49,7 @@ export default class BeneficiaryCategoriesController {
   }
 
   public async show({ params }: HttpContextContract) {
-    const categoryId: number = params.category_id
+    const categoryId: number = params.id
 
     const category = await BeneficiaryCategory.query()
       .where('id', categoryId)
@@ -65,13 +65,16 @@ export default class BeneficiaryCategoriesController {
   }
 
   public async update({ request, params }: HttpContextContract) {
-    const categoryId: number = params.category_id
+    const categoryId: number = params.id
     const payload = await BeneficiaryCategoryValidator.update({
       ...request.all(),
       coverImage: request.file('coverImage'),
     })
 
-    let category = await BeneficiaryCategory.findOrFail(categoryId)
+    let category = await BeneficiaryCategory.query()
+      .where('id', categoryId)
+      .preload('coverImage')
+      .firstOrFail()
 
     if (payload.coverImage) {
       if (category.coverImageId) {
@@ -93,7 +96,10 @@ export default class BeneficiaryCategoriesController {
     return {
       status: 200,
       message: 'Beneficiary Category Updated Successfully',
-      data: category,
+      data: await BeneficiaryCategory.query()
+        .where('id', categoryId)
+        .preload('coverImage')
+        .firstOrFail(),
     }
   }
 
