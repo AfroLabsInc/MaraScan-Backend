@@ -18,7 +18,7 @@ export default class BeneficiariesController {
   }
 
   public async show({ params }: HttpContextContract) {
-    const beneficiaryId: number = params.beneficiaryId
+    const beneficiaryId: number = params.beneficiary_id
 
     const beneficiary = await Beneficiary.query().where('id', beneficiaryId).firstOrFail()
 
