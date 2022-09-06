@@ -13,7 +13,16 @@ export default class BeneficiaryCategoriesController {
     const folder = `categories/${string.toSlug(categoryName)}`
     return ImageService.uploadImage({ tmpPath, folder, fileName })
   }
-  public async index({}: HttpContextContract) {}
+
+  public async index({}: HttpContextContract) {
+    const categories = BeneficiaryCategory.query().preload('coverImage')
+
+    return {
+      status: 200,
+      message: 'Beneficiary Categories Fetched Successfully',
+      data: categories,
+    }
+  }
 
   public async store({ request }: HttpContextContract) {
     const { title, description, coverImage } = await BeneficiaryCategoryValidator.store({
@@ -42,7 +51,11 @@ export default class BeneficiaryCategoriesController {
   public async show({ params }: HttpContextContract) {
     const categoryId: number = params.category_id
 
-    const category = await BeneficiaryCategory.query().where('id', categoryId).firstOrFail()
+    const category = await BeneficiaryCategory.query()
+      .where('id', categoryId)
+      .preload('coverImage')
+      .preload('beneficiaries')
+      .firstOrFail()
 
     return {
       status: 200,
@@ -51,7 +64,38 @@ export default class BeneficiaryCategoriesController {
     }
   }
 
-  public async update({}: HttpContextContract) {}
+  public async update({ request, params }: HttpContextContract) {
+    const categoryId: number = params.category_id
+    const payload = await BeneficiaryCategoryValidator.update({
+      ...request.all(),
+      coverImage: request.file('coverImage'),
+    })
+
+    let category = await BeneficiaryCategory.findOrFail(categoryId)
+
+    if (payload.coverImage) {
+      if (category.coverImageId) {
+        await ImageService.deleteImage(category.coverImage.fileId)
+
+        await (await Image.findOrFail(category.coverImageId)).delete()
+      }
+
+      const image = await this.saveImage(payload.coverImage, category.title)
+      const coverImageId = await (await Image.create(image)).id
+
+      category.merge({ ...payload, coverImageId: coverImageId })
+      await category.save()
+    } else {
+      category.merge(payload)
+      await category.save()
+    }
+
+    return {
+      status: 200,
+      message: 'Beneficiary Category Updated Successfully',
+      data: category,
+    }
+  }
 
   public async destroy({}: HttpContextContract) {}
 }
