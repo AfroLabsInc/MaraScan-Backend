@@ -23,3 +23,18 @@ export type CreateCardBodyType = {
   expMonth: number
   expYear: number
 }
+
+export type CreatePaymentBodyType = {
+  metadata: MetaData
+  amount: { currency: string; amount: string }
+  autoCapture: boolean
+  source: { id: string; type: string }
+  idempotencyKey: string
+  keyId?: string
+  verification: string
+  description: string
+  encryptedData: string
+  channel: string
+  verificationSuccessUrl?: string
+  verificationFailureUrl?: string
+}
