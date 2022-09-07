@@ -28,6 +28,24 @@ class CircleService {
     }
   }
 
+  public async getMasterWalletId() {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).get('/configuration', {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
   public async createCard(data: CreateCardBodyType) {
     const headers = {
       Accept: 'application/json',
@@ -63,6 +81,10 @@ class CircleService {
       errorHandler(error)
     }
   }
+
+  public async createWirePayout() {}
+
+  public async createOnchainPayout() {}
 }
 
 export default new CircleService()
@@ -109,4 +131,16 @@ export default new CircleService()
 //   channel: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
 //   verificationSuccessUrl: 'https://www.example.com/3ds/verificationsuccessful',
 //   verificationFailureUrl: 'https://www.example.com/3ds/verificationfailure',
+// }
+
+// const OnchainPayoutBody = {
+//   source: { type: 'wallet', id: '12345' },
+//   destination: {
+//     type: 'blockchain',
+//     address: '0x8381470ED67C3802402dbbFa0058E8871F017A6F',
+//     addressTag: '123456789',
+//     chain: 'ETH',
+//   },
+//   amount: { amount: '3.14', currency: 'USD' },
+//   idempotencyKey: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
 // }

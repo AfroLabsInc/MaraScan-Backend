@@ -9,6 +9,10 @@ class DonorValidator {
           rules.unique({ table: 'donors', column: 'accountAddress' }),
         ]),
         donorType: schema.enum(['individual', 'organization']),
+        email: schema.string.optional({ trim: true }, [
+          rules.unique({ table: 'donors', column: 'email' }),
+        ]),
+        password: schema.string.optional({ trim: true }),
       }),
       data: payload,
       messages,

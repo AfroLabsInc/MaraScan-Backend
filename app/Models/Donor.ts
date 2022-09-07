@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import OrganizationDonorProfile from './OrganizationDonorProfile'
 import IndividualDonorProfile from './IndividualDonorProfile'
 import DonorKyc from './DonorKyc'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class Donor extends BaseModel {
   @column({ isPrimary: true })
@@ -13,6 +14,12 @@ export default class Donor extends BaseModel {
 
   @column()
   public donorType: string
+
+  @column()
+  public email: string
+
+  @column()
+  public password: string
 
   @hasOne(() => DonorKyc, {
     foreignKey: 'donorId',
@@ -34,4 +41,11 @@ export default class Donor extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeSave()
+  public static async hashPassword(donor: Donor) {
+    if (donor.$dirty.password) {
+      donor.password = await Hash.make(donor.password)
+    }
+  }
 }

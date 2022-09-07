@@ -11,6 +11,10 @@ export default class extends BaseSchema {
 
       table.enum('donorType', ['individual', 'organization'])
 
+      table.string('email').unique()
+
+      table.string('password')
+
       table.index(['accountAddress'])
 
       /**

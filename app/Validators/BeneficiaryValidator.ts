@@ -10,7 +10,7 @@ class BeneficiaryValidator {
         lastName: schema.string({ trim: true }),
         mobile: schema.string({ trim: true }),
         email: schema.string.optional({ trim: true }, [
-          rules.unique({ table: 'individualDonorProfiles', column: 'email' }),
+          rules.unique({ table: 'beneficiaries', column: 'email' }),
         ]),
         country: schema.string({ trim: true }),
         region: schema.string({ trim: true }),
@@ -28,7 +28,7 @@ class BeneficiaryValidator {
         firstName: schema.string.optional({ trim: true }),
         lastName: schema.string.optional({ trim: true }),
         email: schema.string.optional({ trim: true }, [
-          rules.unique({ table: 'individualDonorProfiles', column: 'email' }),
+          rules.unique({ table: 'beneficiaries', column: 'email' }),
         ]),
         country: schema.string.optional({ trim: true }),
         region: schema.string.optional({ trim: true }),

@@ -34,7 +34,19 @@ export type CreatePaymentBodyType = {
   verification: string
   description: string
   encryptedData: string
-  channel: string
+  channel?: string
   verificationSuccessUrl?: string
   verificationFailureUrl?: string
+}
+
+export type CreateOnchainPayoutBodyType = {
+  source: { type: string; id: string }
+  destination: {
+    type: string
+    address: string
+    addressTag?: string
+    chain: string
+  }
+  amount: { amount: string; currency: string }
+  idempotencyKey: string
 }
