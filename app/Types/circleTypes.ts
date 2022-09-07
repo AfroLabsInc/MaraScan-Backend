@@ -14,6 +14,8 @@ type MetaData = {
   ipAddress: string
 }
 
+type Amount = { amount: string; currency: string }
+
 export type CreateCardBodyType = {
   billingDetails: BillingDetails
   metadata: MetaData
@@ -26,7 +28,7 @@ export type CreateCardBodyType = {
 
 export type CreatePaymentBodyType = {
   metadata: MetaData
-  amount: { currency: string; amount: string }
+  amount: Amount
   autoCapture: boolean
   source: { id: string; type: string }
   idempotencyKey: string
@@ -39,6 +41,14 @@ export type CreatePaymentBodyType = {
   verificationFailureUrl?: string
 }
 
+export type CreateCryptoPaymentIntentType = {
+  amount: Amount
+  amountPaid: { currency: string }
+  paymentMethods: [{ type: string; chain: string }]
+  idempotencyKey: string
+  settlementCurrency: string
+}
+
 export type CreateOnchainPayoutBodyType = {
   source: { type: string; id: string }
   destination: {
@@ -47,6 +57,14 @@ export type CreateOnchainPayoutBodyType = {
     addressTag?: string
     chain: string
   }
-  amount: { amount: string; currency: string }
+  amount: Amount
+  idempotencyKey: string
+}
+
+export type CreateWirePayoutType = {
+  source: { type: string; id: string }
+  destination: { type: string; id: string }
+  amount: Amount
+  metadata: { beneficiaryEmail: string }
   idempotencyKey: string
 }

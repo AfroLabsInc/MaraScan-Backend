@@ -1,5 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env'
-import { CreateCardBodyType, CreatePaymentBodyType } from 'App/Types/circleTypes'
+import {
+  CreateCardBodyType,
+  CreateCryptoPaymentIntentType,
+  CreateOnchainPayoutBodyType,
+  CreatePaymentBodyType,
+  CreateWirePayoutType,
+} from 'App/Types/circleTypes'
 import { axiosClient, errorHandler } from 'App/Utils'
 
 class CircleService {
@@ -82,9 +88,77 @@ class CircleService {
     }
   }
 
-  public async createWirePayout() {}
+  public async createCryptoPaymentIntent(data: CreateCryptoPaymentIntentType) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).post('/paymentIntents', data, {
+        headers: headers,
+      })
 
-  public async createOnchainPayout() {}
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
+  public async getCryptoPaymentIntent(paymentIntentId: string) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).get(`/paymentIntents/${paymentIntentId}`, {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
+  public async createOnchainPayout(data: CreateOnchainPayoutBodyType) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).post('/transfers', data, {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
+  public async createWirePayout(data: CreateWirePayoutType) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).post('/payouts', data, {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
 }
 
 export default new CircleService()
@@ -143,4 +217,20 @@ export default new CircleService()
 //   },
 //   amount: { amount: '3.14', currency: 'USD' },
 //   idempotencyKey: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
+// }
+
+// const WirePayoutBody = {
+//   source: { type: 'wallet', id: '12345' },
+//   destination: { type: 'wire', id: 'b8627ae8-732b-4d25-b947-1df8f4007a29' },
+//   amount: { currency: 'USD', amount: '3.14' },
+//   metadata: { beneficiaryEmail: 'satoshi@circle.com' },
+//   idempotencyKey: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
+// }
+
+// const paymentIntentBody = {
+//   amount: { amount: '3.14', currency: 'USD' },
+//   amountPaid: { currency: 'USD' },
+//   paymentMethods: [{ type: 'blockchain', chain: 'ETH' }],
+//   idempotencyKey: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
+//   settlementCurrency: 'USD',
 // }
