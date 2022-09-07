@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.text('accountAddress').unique().notNullable()
+      table.text('accountAddress').unique()
 
       table.enum('donorType', ['individual', 'organization'])
 

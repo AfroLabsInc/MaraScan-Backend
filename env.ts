@@ -43,4 +43,7 @@ export default Env.rules({
 
   COIN_MARKET_CAP_API_BASE_URL: Env.schema.string(),
   COIN_MARKET_CAP_API_KEY: Env.schema.string(),
+
+  CIRCLE_API_BASE_URL: Env.schema.string(),
+  CIRCLE_API_TOKEN: Env.schema.string(),
 })
