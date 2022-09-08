@@ -8,6 +8,11 @@ export default () => {
     }).prefix('beneficiaries')
 
     Route.group(() => {
+      Route.post('register', 'DonorAuthsController.register')
+      Route.post('login', 'DonorAuthsController.login')
+    }).prefix('donors')
+
+    Route.group(() => {
       Route.post('login', 'AdminAuthsController.login')
     }).prefix('admin')
   }).prefix('auth')

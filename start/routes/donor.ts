@@ -6,8 +6,10 @@ export default () => {
 
     Route.get('donors/address/:account_address', 'DonorsController.showByAddress')
 
-    Route.resource('donors.profiles', 'DonorProfilesController').apiOnly()
+    Route.group(() => {
+      Route.resource('donors.profiles', 'DonorProfilesController').apiOnly()
 
-    Route.post('donors/:donor_id/kyc', 'DonorKycsController.store')
+      Route.post('donors/:donor_id/kyc', 'DonorKycsController.store')
+    }).middleware('auth:donorApi')
   })
 }
