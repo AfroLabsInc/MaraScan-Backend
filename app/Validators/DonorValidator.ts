@@ -5,14 +5,25 @@ class DonorValidator {
   public store(payload) {
     return validator.validate({
       schema: schema.create({
-        accountAddress: schema.string({ trim: true }, [
+        accountAddress: schema.string.optional({ trim: true }, [
           rules.unique({ table: 'donors', column: 'accountAddress' }),
         ]),
         donorType: schema.enum(['individual', 'organization']),
-        email: schema.string.optional({ trim: true }, [
-          rules.unique({ table: 'donors', column: 'email' }),
+        email: schema.string({ trim: true }, [rules.unique({ table: 'donors', column: 'email' })]),
+        password: schema.string({ trim: true }),
+      }),
+      data: payload,
+      messages,
+    })
+  }
+  public login(payload) {
+    return validator.validate({
+      schema: schema.create({
+        email: schema.string({ trim: true }, [
+          rules.email(),
+          rules.exists({ table: 'donors', column: 'email' }),
         ]),
-        password: schema.string.optional({ trim: true }),
+        password: schema.string({ trim: true }),
       }),
       data: payload,
       messages,

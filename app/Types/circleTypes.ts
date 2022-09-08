@@ -35,7 +35,7 @@ export type CreatePaymentBodyType = {
   keyId?: string
   verification: string
   description: string
-  encryptedData: string
+  encryptedData?: string
   channel?: string
   verificationSuccessUrl?: string
   verificationFailureUrl?: string

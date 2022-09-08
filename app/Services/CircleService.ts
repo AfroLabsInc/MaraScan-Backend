@@ -70,6 +70,24 @@ class CircleService {
     }
   }
 
+  public async getCard(cardId: string) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).get(`/cards/${cardId}`, {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
   public async createPayment(data: CreatePaymentBodyType) {
     const headers = {
       Accept: 'application/json',
@@ -77,6 +95,24 @@ class CircleService {
     }
     try {
       const response = await axiosClient(this.baseUrl).post('/payments', data, {
+        headers: headers,
+      })
+
+      if (response.data) {
+        return response.data
+      }
+    } catch (error) {
+      errorHandler(error)
+    }
+  }
+
+  public async getPayment(paymentId: string) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    }
+    try {
+      const response = await axiosClient(this.baseUrl).get(`/payments/${paymentId}`, {
         headers: headers,
       })
 
