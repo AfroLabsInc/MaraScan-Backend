@@ -22,9 +22,14 @@ export default class CircleCardPaymentsController {
 
     if (result.data && result.data.status === 'pending') {
       result = await CircleService.getCard(result.data.id)
-    } else if (result.data && result.data.status === 'failed') {
-      console.log('failed')
-    } else {
+    }
+
+    if (result.data && result.data.status === 'failed') {
+      return {
+        status: 400,
+        message: 'Card Failed to be Added',
+      }
+    } else if (result.data && result.data.status === 'complete') {
       const { data } = result
       await DonorCircleSavedCard.create({
         donorId,
@@ -84,7 +89,24 @@ export default class CircleCardPaymentsController {
         verification: 'cvv',
         description: donationRequest.note || 'Donation To Save WildLife',
       }
-      const result = await CircleService.createPayment(paymentPayload)
+      let result = await CircleService.createPayment(paymentPayload)
+
+      console.log(result)
+
+      if (result.data && result.data.status === 'pending') {
+        result = await CircleService.getPayment(result.data.id)
+      }
+
+      if (result.data && result.data.status === 'failed') {
+        console.log('Failed')
+      } else {
+        console.log('done')
+      }
+
+      return {
+        status: 200,
+        message: 'Donation Payment Done Successfully',
+      }
     }
   }
 }
