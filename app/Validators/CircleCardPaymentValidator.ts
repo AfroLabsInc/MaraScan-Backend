@@ -36,6 +36,8 @@ class CircleCardPaymentValidator {
         circleCardId: schema.string(),
         ipAddress: schema.string({ trim: true }),
         sessionId: schema.string(),
+        idempotencyKey: schema.string(),
+        keyId: schema.string.optional(),
         amount: schema.object().members({
           currency: schema.string(),
           amount: schema.string(),
