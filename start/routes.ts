@@ -26,11 +26,13 @@ import {
   authRoutes,
   beneficiaryRoutes,
   adminRoutes,
+  circleRoutes,
 } from './routes/index'
 
 Route.group(() => {
   authRoutes()
   adminRoutes()
+  circleRoutes()
   ussdRoutes()
   mpesaRoutes()
   donorRoutes()
