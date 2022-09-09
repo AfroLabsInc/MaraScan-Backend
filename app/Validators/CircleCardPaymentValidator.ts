@@ -33,6 +33,7 @@ class CircleCardPaymentValidator {
   public pay(payload) {
     return validator.validate({
       schema: schema.create({
+        circleCardId: schema.string(),
         ipAddress: schema.string({ trim: true }),
         sessionId: schema.string(),
         amount: schema.object().members({
