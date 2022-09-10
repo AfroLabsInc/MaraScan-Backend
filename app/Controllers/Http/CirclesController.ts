@@ -2,7 +2,9 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class CirclesController {
   public async notificationReceiver({ request }: HttpContextContract) {
-    const body = request.body()
-    console.log('body', JSON.parse(body))
+    const { notificationType, payment } = request.body()
+
+    console.log(notificationType)
+    console.log(payment)
   }
 }
