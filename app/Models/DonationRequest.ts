@@ -24,6 +24,9 @@ export default class DonationRequest extends BaseModel {
   @column()
   public paymentStatus: string
 
+  @column()
+  public paymentId: string
+
   @belongsTo(() => Donor, {
     foreignKey: 'donorId',
   })

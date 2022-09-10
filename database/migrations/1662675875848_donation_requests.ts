@@ -17,7 +17,9 @@ export default class extends BaseSchema {
 
       table.text('note')
 
-      table.enum('paymentStatus', ['paid', 'not-paid']).defaultTo('not-paid')
+      table.enum('paymentStatus', ['paid', 'pending', 'failed']).defaultTo('pending')
+
+      table.string('paymentId')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

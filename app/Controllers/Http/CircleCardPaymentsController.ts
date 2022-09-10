@@ -91,21 +91,15 @@ export default class CircleCardPaymentsController {
       }
       let result = await CircleService.createPayment(paymentPayload)
 
-      console.log(result)
-
-      if (result.data && result.data.status === 'pending') {
-        result = await CircleService.getPayment(result.data.id)
-      }
-
-      if (result.data && result.data.status === 'failed') {
-        console.log('Failed')
-      } else {
-        console.log('done')
+      if (result.data) {
+        donationRequest.paymentId = result.data.id
+        await donationRequest.save()
       }
 
       return {
         status: 200,
-        message: 'Donation Payment Done Successfully',
+        message: 'Donation Payment Initated',
+        data: result.data,
       }
     }
   }
