@@ -12,10 +12,10 @@ export default class CirclesController {
       body += chunk.toString()
     })
 
-    console.log(body)
-
     request.request.on('end', () => {
       let payload = JSON.parse(body)
+
+      console.log(payload)
 
       if (payload.Type === 'SubscriptionConfirmation') {
         const url = payload.SubscribeURL
