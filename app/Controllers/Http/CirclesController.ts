@@ -4,7 +4,7 @@ import axios from 'axios'
 export default class CirclesController {
   public async notificationSubscriber({ request, response }: HttpContextContract) {
     console.log(request.all())
-    console.log(request.request.on)
+    console.log(request.request)
 
     let body = ''
 
