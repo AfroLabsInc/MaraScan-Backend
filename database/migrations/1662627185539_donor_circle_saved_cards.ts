@@ -13,6 +13,8 @@ export default class extends BaseSchema {
 
       table.string('network')
 
+      table.boolean('isApproved').defaultTo(false)
+
       table.json('circleCardData')
 
       /**

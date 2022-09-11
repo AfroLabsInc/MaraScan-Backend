@@ -15,6 +15,9 @@ export default class DonorCircleSavedCard extends BaseModel {
   @column()
   public network: string
 
+  @column()
+  public isApproved: boolean
+
   @column({ prepare: (value) => (value ? JSON.stringify(value) : value) })
   public circleCardData: object
 
