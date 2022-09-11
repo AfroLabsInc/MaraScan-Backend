@@ -13,7 +13,7 @@ export default class extends BaseSchema {
 
       table.string('network')
 
-      table.boolean('isApproved').defaultTo(false)
+      table.enum('approvalStatus', ['pending', 'complete', 'failed']).defaultTo('pending')
 
       table.json('circleCardData')
 

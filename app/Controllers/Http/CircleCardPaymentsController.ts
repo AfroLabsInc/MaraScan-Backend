@@ -15,35 +15,23 @@ export default class CircleCardPaymentsController {
     const donorId: number = params.donor_id
     const payload = await CircleCardPaymentValidator.addNewCard({ ...request.all() })
 
-    let result
-    let responseData
+    const result = await CircleService.createCard(payload)
 
-    result = await CircleService.createCard(payload)
-
-    if (result.data && result.data.status === 'pending') {
-      result = await CircleService.getCard(result.data.id)
-    }
-
-    if (result.data && result.data.status === 'failed') {
-      return {
-        status: 400,
-        message: 'Card Failed to be Added',
-      }
-    } else if (result.data && result.data.status === 'complete') {
+    if (result.data) {
       const { data } = result
       await DonorCircleSavedCard.create({
         donorId,
         circleCardId: data.id,
         network: data.network,
         circleCardData: data,
+        approvalStatus: data.status,
       })
-      responseData = data
     }
 
     return {
       status: 201,
-      message: 'Card Added Successfully',
-      data: responseData,
+      message: 'Card Added Successfully, Awaiting Approval',
+      data: result.data,
     }
   }
 
