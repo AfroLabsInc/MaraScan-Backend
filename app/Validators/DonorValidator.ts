@@ -16,6 +16,16 @@ class DonorValidator {
       messages,
     })
   }
+  public walletAuth(payload) {
+    return validator.validate({
+      schema: schema.create({
+        accountAddress: schema.string({ trim: true }),
+        donorType: schema.enum(['individual', 'organization']),
+      }),
+      data: payload,
+      messages,
+    })
+  }
   public login(payload) {
     return validator.validate({
       schema: schema.create({

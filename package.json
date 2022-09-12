@@ -66,6 +66,7 @@
     "pg": "^8.8.0",
     "phc-bcrypt": "^1.0.7",
     "proxy-addr": "^2.0.7",
+    "randomatic": "^3.1.1",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
     "web3": "^1.7.5"

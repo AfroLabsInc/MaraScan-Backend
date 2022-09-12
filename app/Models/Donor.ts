@@ -4,6 +4,7 @@ import OrganizationDonorProfile from './OrganizationDonorProfile'
 import IndividualDonorProfile from './IndividualDonorProfile'
 import DonorKyc from './DonorKyc'
 import Hash from '@ioc:Adonis/Core/Hash'
+import { encryptText } from 'App/Utils'
 
 export default class Donor extends BaseModel {
   @column({ isPrimary: true })
@@ -20,6 +21,9 @@ export default class Donor extends BaseModel {
 
   @column()
   public password: string
+
+  @column()
+  public encryptedPassword: string
 
   @hasOne(() => DonorKyc, {
     foreignKey: 'donorId',
@@ -45,6 +49,7 @@ export default class Donor extends BaseModel {
   @beforeSave()
   public static async hashPassword(donor: Donor) {
     if (donor.$dirty.password) {
+      donor.encryptedPassword = await encryptText(donor.password)
       donor.password = await Hash.make(donor.password)
     }
   }

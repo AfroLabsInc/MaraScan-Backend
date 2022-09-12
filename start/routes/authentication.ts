@@ -8,6 +8,7 @@ export default () => {
     }).prefix('beneficiaries')
 
     Route.group(() => {
+      Route.post('wallet', 'DonorAuthsController.walletAuth')
       Route.post('register', 'DonorAuthsController.register')
       Route.post('login', 'DonorAuthsController.login')
     }).prefix('donors')

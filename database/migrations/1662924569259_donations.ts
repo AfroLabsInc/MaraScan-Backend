@@ -1,23 +1,22 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'donors'
+  protected tableName = 'donations'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.text('accountAddress').unique()
+      table.integer('donorId').unsigned().references('id').inTable('donors').onDelete('CASCADE')
 
-      table.enum('donorType', ['individual', 'organization'])
+      table
+        .integer('donationRequestId')
+        .unsigned()
+        .references('id')
+        .inTable('donationRequests')
+        .onDelete('CASCADE')
 
-      table.string('email').unique()
-
-      table.string('password')
-
-      table.text('encryptedPassword')
-
-      table.index(['accountAddress', 'email'])
+      table.boolean('isDisbursed').defaultTo(false)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
