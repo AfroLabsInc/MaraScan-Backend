@@ -5,7 +5,7 @@ export default () => {
     Route.group(() => {
       Route.post('register', 'BeneficiaryAuthsController.register')
       Route.post('login', 'BeneficiaryAuthsController.login')
-      Route.post('logout', 'DonorAuthsController.logout')
+      Route.post('logout', 'BeneficiaryAuthsController.logout')
     }).prefix('beneficiaries')
 
     Route.group(() => {
@@ -17,7 +17,7 @@ export default () => {
 
     Route.group(() => {
       Route.post('login', 'AdminAuthsController.login')
-      Route.post('logout', 'DonorAuthsController.logout')
+      Route.post('logout', 'AdminAuthsController.logout')
     }).prefix('admin')
   }).prefix('auth')
 }
