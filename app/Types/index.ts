@@ -4,3 +4,9 @@ export type USSDDataType = {
   sessionId?: string
   serviceCode?: string
 }
+
+export type SMSDataType = {
+  to: string[]
+  from: string
+  message: string
+}
