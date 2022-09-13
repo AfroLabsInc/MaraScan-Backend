@@ -16,11 +16,24 @@ class DonorValidator {
       messages,
     })
   }
-  public walletAuth(payload) {
+  public walletRegister(payload) {
     return validator.validate({
       schema: schema.create({
-        accountAddress: schema.string({ trim: true }),
+        accountAddress: schema.string({ trim: true }, [
+          rules.unique({ table: 'donors', column: 'accountAddress' }),
+        ]),
         donorType: schema.enum(['individual', 'organization']),
+      }),
+      data: payload,
+      messages,
+    })
+  }
+  public walletLogin(payload) {
+    return validator.validate({
+      schema: schema.create({
+        accountAddress: schema.string({ trim: true }, [
+          rules.exists({ table: 'donors', column: 'accountAddress' }),
+        ]),
       }),
       data: payload,
       messages,

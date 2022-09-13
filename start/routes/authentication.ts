@@ -9,7 +9,9 @@ export default () => {
     }).prefix('beneficiaries')
 
     Route.group(() => {
-      Route.post('wallet', 'DonorAuthsController.walletAuth')
+      Route.post('wallet-register', 'DonorAuthsController.walletRegister')
+      Route.post('wallet-login', 'DonorAuthsController.walletLogin')
+
       Route.post('register', 'DonorAuthsController.register')
       Route.post('login', 'DonorAuthsController.login')
       Route.post('logout', 'DonorAuthsController.logout')

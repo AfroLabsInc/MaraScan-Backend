@@ -57,18 +57,42 @@ export default class DonorAuthsController {
     }
   }
 
-  public async walletAuth({ request, auth }: HttpContextContract) {
-    const payload = await DonorValidator.walletAuth({ ...request.all() })
+  public async walletRegister({ request, auth }: HttpContextContract) {
+    const payload = await DonorValidator.walletRegister({ ...request.all() })
 
-    let donor = await Donor.findBy('accountAddress', payload.accountAddress)
+    const password = randomDigits('A0', 8)
+    let donor = await Donor.create({
+      ...payload,
+      password,
+    })
 
-    if (!donor) {
-      const password = randomDigits('A0', 8)
-      donor = await Donor.create({
-        ...payload,
-        password,
+    const token = await auth
+      .use('donorApi')
+      .attempt(payload.accountAddress, decryptText(donor.encryptedPassword), {
+        expiresIn: '2 days',
       })
+
+    donor = await Donor.query()
+      .where('accountAddress', payload.accountAddress)
+      .preload('kyc')
+      .preload('individualProfile')
+      .preload('organizationProfile')
+      .firstOrFail()
+
+    return {
+      status: 201,
+      message: 'Donor Authenticated successfully',
+      data: {
+        token: token.token,
+        donor: donor,
+      },
     }
+  }
+
+  public async walletLogin({ request, auth }: HttpContextContract) {
+    const payload = await DonorValidator.walletLogin({ ...request.all() })
+
+    let donor = await Donor.findByOrFail('accountAddress', payload.accountAddress)
 
     const token = await auth
       .use('donorApi')
