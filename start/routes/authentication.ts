@@ -14,6 +14,7 @@ export default () => {
 
       Route.post('register', 'DonorAuthsController.register')
       Route.post('login', 'DonorAuthsController.login')
+
       Route.post('logout', 'DonorAuthsController.logout')
     }).prefix('donors')
 

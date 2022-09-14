@@ -43,5 +43,7 @@ export default class DonationRequestsController {
     }
   }
 
+  public async update({}: HttpContextContract) {}
+
   public async destroy({}: HttpContextContract) {}
 }

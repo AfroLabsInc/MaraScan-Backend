@@ -7,7 +7,7 @@ class OrganizationDonorProfileValidator {
       schema: schema.create({
         name: schema.string({ trim: true }),
         description: schema.string({ trim: true }),
-        type: schema.enum(['governental', 'non-governmental']),
+        type: schema.enum(['governmental', 'non-governmental']),
         email: schema.string({ trim: true }, [
           rules.unique({ table: 'organizationDonorProfiles', column: 'email' }),
         ]),
@@ -26,7 +26,7 @@ class OrganizationDonorProfileValidator {
       schema: schema.create({
         name: schema.string.optional({ trim: true }),
         description: schema.string.optional({ trim: true }),
-        type: schema.enum.optional(['governental', 'non-governmental']),
+        type: schema.enum.optional(['governmental', 'non-governmental']),
         email: schema.string.optional({ trim: true }, [
           rules.unique({ table: 'organizationDonorProfiles', column: 'email' }),
         ]),
