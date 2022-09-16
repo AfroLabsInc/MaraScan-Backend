@@ -49,4 +49,6 @@ export default Env.rules({
 
   AFRICASTALKING_APIKEY: Env.schema.string(),
   AFRICASTALKING_USERNAME: Env.schema.string(),
+
+  GOERLI_MARASCAN_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
 })

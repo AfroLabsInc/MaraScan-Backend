@@ -1,14 +1,13 @@
 import { BigNumber, Contract, utils, ContractFactory } from 'ethers'
 import maraAbi from './abi/marascan.json'
+import Provider from './connection/provider'
 
-export default class Contracts {
-  private marascanProxyAddress
-
-  constructor() {
-    this.marascanProxyAddress = ''
+export default class Contracts extends Provider {
+  constructor(network: string) {
+    super(network)
   }
   public async marascanContract() {
     const contract = new ContractFactory(maraAbi.abi, maraAbi.byteCode)
-    return contract.attach(this.marascanProxyAddress)
+    return contract.attach(this.getProxyAddress())
   }
 }
