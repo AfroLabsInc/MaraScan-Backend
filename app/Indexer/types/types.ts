@@ -14,3 +14,13 @@ export abstract class NetworkUtilsType {
   public static getRpcUrl: (network: string) => string
   public static getNetwork: (network: string) => NetworkType | undefined
 }
+
+export type DonationEventtype = {
+  donor: string
+  amount: number
+  donorId: number
+  previousUndisbursedBalance: number
+  currentUndisbursedBalance: number
+  categories: number[]
+  minimumAmountToDisburse: number
+}

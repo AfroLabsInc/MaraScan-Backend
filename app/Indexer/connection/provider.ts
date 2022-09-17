@@ -1,8 +1,8 @@
 import { providers } from 'ethers'
 import NetworkUtils from '../utils/networkUtils'
 export default class Provider {
-  private provider: providers.JsonRpcProvider
-  private network: string
+  public provider: providers.JsonRpcProvider
+  public network: string
   constructor(network: string) {
     this.network = network
     this.provider = new providers.JsonRpcProvider(NetworkUtils.getRpcUrl(network))

@@ -23,10 +23,7 @@ export default [
     label: 'Goerli Ethereum',
     chainId: 5,
     currency: 'ETH',
-    rpc: [
-      'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-      'https://eth-rinkeby.alchemyapi.io/v2/7lR5N50UXB4y8URS4S9J3JPuxHWkW8uH',
-    ],
+    rpc: ['https://eth-goerli.g.alchemy.com/v2/MbhgMXsdTaM8wSMpDfz5uDI-J8G_IJ3j'],
     explorer: 'https://goerli.etherscan.io',
     api: 'https://api-goerli.etherscan.io/api?module=account&action=tokentx',
   },
