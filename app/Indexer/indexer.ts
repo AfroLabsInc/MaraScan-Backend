@@ -12,7 +12,7 @@ const marascanContractIndex = async () => {
     async (
       donor,
       amount,
-      donorId,
+      donationRequestId,
       previousUndisbursedBalance,
       currentUndisbursedBalance,
       categories,
@@ -21,7 +21,7 @@ const marascanContractIndex = async () => {
       const data: DonationEventtype = {
         donor: donor,
         amount: Number(utils.formatUnits(amount, 6)),
-        donorId: donorId,
+        donationRequestId: donationRequestId,
         previousUndisbursedBalance: Number(utils.formatUnits(previousUndisbursedBalance, 6)),
         currentUndisbursedBalance: Number(utils.formatUnits(currentUndisbursedBalance, 6)),
         categories: categories,

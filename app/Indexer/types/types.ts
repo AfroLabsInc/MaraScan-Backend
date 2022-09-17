@@ -18,7 +18,7 @@ export abstract class NetworkUtilsType {
 export type DonationEventtype = {
   donor: string
   amount: number
-  donorId: number
+  donationRequestId: number
   previousUndisbursedBalance: number
   currentUndisbursedBalance: number
   categories: number[]
