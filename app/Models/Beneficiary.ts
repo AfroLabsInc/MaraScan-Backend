@@ -13,6 +13,7 @@ import BeneficiaryKyc from './BeneficiaryKyc'
 import UssdUser from './UssdUser'
 import { encryptText } from 'App/Utils'
 import Hash from '@ioc:Adonis/Core/Hash'
+import BeneficiaryLand from './BeneficiaryLand'
 
 export default class Beneficiary extends BaseModel {
   @column({ isPrimary: true })
@@ -60,6 +61,11 @@ export default class Beneficiary extends BaseModel {
     foreignKey: 'beneficiaryId',
   })
   public kyc: HasOne<typeof BeneficiaryKyc>
+
+  @hasOne(() => BeneficiaryLand, {
+    foreignKey: 'beneficiaryId',
+  })
+  public land: HasOne<typeof BeneficiaryLand>
 
   @hasOne(() => UssdUser, {
     foreignKey: 'beneficiaryId',
