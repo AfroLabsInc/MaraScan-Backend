@@ -1,4 +1,4 @@
-import { BigNumber, utils } from 'ethers'
+import { utils } from 'ethers'
 import Contracts from './contracts'
 import { DonationEventtype } from './types/types'
 
@@ -33,7 +33,7 @@ const marascanContractIndex = async () => {
   )
 
   // Disbursement Event
-  marascanContract.on('Disbursed', async (amount, donations) => {})
+  // marascanContract.on('Disbursed', async (amount, donations) => {})
 }
 
 marascanContractIndex()
