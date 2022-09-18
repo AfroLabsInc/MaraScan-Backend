@@ -7,6 +7,8 @@ export default () => {
     Route.group(() => {
       Route.resource('beneficiaries', 'BeneficiariesController').apiOnly()
 
+      Route.resource('beneficiaries.lands', 'BeneficiaryLandsController').apiOnly()
+
       Route.post('beneficiaries/:beneficiary_id/kyc', 'BeneficiaryKycsController.store')
     }).middleware('auth:beneficiaryApi')
   })

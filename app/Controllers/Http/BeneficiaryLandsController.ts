@@ -43,8 +43,12 @@ export default class BeneficiaryLandsController {
 
   public async show({ params }: HttpContextContract) {
     const landId: number = params.id
+    // const beneficiaryId: number = params.beneficiary_id
 
-    const beneficiaryLand = await BeneficiaryLand.query().where('id', landId)
+    const beneficiaryLand = await BeneficiaryLand.query()
+      .where('id', landId)
+      .preload('titleDeedImage')
+      .firstOrFail()
 
     return {
       status: 200,

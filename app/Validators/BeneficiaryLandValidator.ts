@@ -5,7 +5,7 @@ class BeneficiaryValidator {
   public store(payload) {
     return validator.validate({
       schema: schema.create({
-        titleDeedImage: schema.file.optional({
+        titleDeedImage: schema.file({
           size: '20mb',
           extnames: ['jpg', 'png', 'jpeg'],
         }),
