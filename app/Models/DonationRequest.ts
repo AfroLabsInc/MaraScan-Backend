@@ -25,6 +25,12 @@ export default class DonationRequest extends BaseModel {
   public paymentStatus: string
 
   @column()
+  public isDisbursed: boolean
+
+  @column()
+  public disbursedAmount: number
+
+  @column()
   public paymentId: string
 
   @belongsTo(() => Donor, {

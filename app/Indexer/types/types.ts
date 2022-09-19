@@ -15,12 +15,17 @@ export abstract class NetworkUtilsType {
   public static getNetwork: (network: string) => NetworkType | undefined
 }
 
-export type DonationEventtype = {
+export type DonationEventType = {
   donor: string
   amount: number
   donationRequestId: number
-  previousUndisbursedBalance: number
   currentUndisbursedBalance: number
-  categories: number[]
-  minimumAmountToDisburse: number
+}
+
+export type DisbursedEventType = {
+  donorAddress: string
+  donationRequestId: number
+  amountDisbursed: number
+  beneficiaryAddress: string
+  amountForBeneficiary: number
 }

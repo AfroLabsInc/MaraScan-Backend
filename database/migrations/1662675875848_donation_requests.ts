@@ -19,6 +19,10 @@ export default class extends BaseSchema {
 
       table.enum('paymentStatus', ['paid', 'pending', 'failed']).defaultTo('pending')
 
+      table.boolean('isDisbursed').defaultTo(false)
+
+      table.float('disbursedAmount').defaultTo(0.0)
+
       table.string('paymentId')
 
       /**
