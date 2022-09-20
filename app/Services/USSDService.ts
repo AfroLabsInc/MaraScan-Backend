@@ -67,6 +67,10 @@ export default class USSDService {
 
     const ussdUser = await UssdUser.findByOrFail('mobile', data.phoneNumber)
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
+    if (beneficiary) {
+      ussdUser.beneficiaryId = beneficiary.id
+      await ussdUser.save()
+    }
     let response
 
     if (!beneficiary) {
