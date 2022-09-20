@@ -28,6 +28,8 @@ class BeneficiaryEthereumAccountService extends Provider {
 
     balance = BigNumber.from(balance).toNumber()
 
+    console.log(balance)
+
     return Number(balance / Math.pow(10, 6))
   }
 
