@@ -4,7 +4,7 @@ import DonorCircleSavedCard from 'App/Models/DonorCircleSavedCard'
 
 export default class CirclesController {
   public async notificationReceiver({ request }: HttpContextContract) {
-    const { notificationType, card, payment, transfer, settlement } = request.body()
+    const { notificationType, card, payment, paymentIntent, transfer, settlement } = request.body()
 
     if (notificationType === 'cards') {
       // Card Creation
@@ -22,6 +22,21 @@ export default class CirclesController {
 
         donationRequest.paymentStatus = payment.status === 'confirmed' ? 'paid' : 'failed'
         await donationRequest.save()
+      }
+    } else if (notificationType === 'paymentIntents') {
+      console.log(paymentIntent)
+      // if the payment source is card, then it must be a donation payment
+      if (
+        paymentIntent.paymentMethods[0].address &&
+        paymentIntent.timeline[0].status === 'pending'
+      ) {
+        const address = paymentIntent.paymentMethods[0].address
+
+        console.log(address)
+      } else if (
+        paymentIntent.paymentMethods[0].address &&
+        paymentIntent.timeline[0].status === 'complete'
+      ) {
       }
     } else if (notificationType === 'transfers') {
       console.log(transfer)

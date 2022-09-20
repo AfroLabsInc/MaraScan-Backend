@@ -63,7 +63,7 @@
     "ethers": "^5.7.1",
     "imagekit": "^4.1.1",
     "luxon": "^3.0.1",
-    "mpesa-node": "^0.1.3",
+    "mpesa-api": "^3.0.2",
     "pg": "^8.8.0",
     "phc-bcrypt": "^1.0.7",
     "proxy-addr": "^2.0.7",

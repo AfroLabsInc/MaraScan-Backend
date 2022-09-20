@@ -1,7 +1,10 @@
-import MarascanService from 'App/Services/MarascanService'
+// import MarascanService from 'App/Services/MarascanService'
+import MpesaService from 'App/Services/MpesaService'
 import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
 import { DisbursedEventType, DonationEventType } from './types/types'
+
+MpesaService.b2c()
 
 const marascanContractIndex = async () => {
   const contracts = new Contracts('goerli')

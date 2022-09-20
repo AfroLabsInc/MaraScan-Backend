@@ -51,4 +51,11 @@ export default Env.rules({
   AFRICASTALKING_USERNAME: Env.schema.string(),
 
   GOERLI_MARASCAN_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
+
+  MPESA_CONSUMER_KEY: Env.schema.string(),
+  MPESA_SECRET_KEY: Env.schema.string(),
+  MPESA_INITIATOR_PASSWORD: Env.schema.string(),
+  MPESA_SECURITY_CREDENTIAL: Env.schema.string(),
+
+  BACKEND_BASE_URL: Env.schema.string(),
 })
