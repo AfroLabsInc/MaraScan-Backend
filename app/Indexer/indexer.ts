@@ -1,4 +1,4 @@
-// import MarascanService from 'App/Services/MarascanService'
+import MarascanService from 'App/Services/MarascanService'
 import MpesaService from 'App/Services/MpesaService'
 import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
@@ -23,6 +23,8 @@ const marascanContractIndex = async () => {
         currentUndisbursedBalance: Number(utils.formatUnits(currentUndisbursedBalance, 6)),
       }
 
+      await MarascanService.donation(data)
+
       console.log(data)
     }
   )
@@ -45,7 +47,7 @@ const marascanContractIndex = async () => {
       amountForBeneficiary: Number(dataArray[4] / Math.pow(10, 6)),
     }
 
-    // await MarascanService.disbursement
+    await MarascanService.disbursement(data)
 
     console.log(data)
   })
