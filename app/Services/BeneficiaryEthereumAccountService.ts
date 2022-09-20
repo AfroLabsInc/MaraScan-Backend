@@ -24,6 +24,8 @@ class BeneficiaryEthereumAccountService extends Provider {
 
     const usdcContract = await contracts.usdcContract()
 
+    console.log(usdcContract)
+
     let balance = await usdcContract.balanceOf(beneficiary.ethereumAccountAddress)
 
     balance = BigNumber.from(balance).toNumber()
