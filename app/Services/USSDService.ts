@@ -22,15 +22,18 @@ const content = {
     address: 'Enter your address',
     kId: 'Enter your Kenya ID Number',
     formComplete: 'Thanks for Completing the form, reply with',
+    confirmReg: 'Confirm Registration',
+    cancelReg: 'Cancel Registration.',
     registerDone:
-      'Congratulations, your details have been submitted and will be reviewd by our Admins',
+      'Congratulations, your details have been submitted and will be reviewd by our system for verification',
     registerCancel:
       "We're sorry that you couldn't proceed with the registration. We hope to have you again soon.",
     manageAccMenu: 'What would you like to check?',
     accBal: 'Account balance',
     transferMoney: 'Transfer money',
     withdrawToMpesa: 'Withdraw to M-Pesa',
-    viewHistory: 'View Transaction History',
+    viewHistory: 'View Donation History',
+    accBalRes: 'Your Account Balance is',
   },
   swahili: {
     welcomeMsg: 'Karibu MaraScan. Jibu na',
@@ -48,13 +51,16 @@ const content = {
     kId: 'Weka Nambari yako ya Kitambulisho cha Kenya',
     formComplete: 'Asante kwa Kujaza fomu, jibu na',
     registerDone: 'Hongera, maelezo yako yamewasilishwa na yatakaguliwa na Wasimamizi wetu',
+    confirmReg: 'Thibitisha Usajili.',
+    cancelReg: 'Ghairi Usajili.',
     registerCancel:
       'Tunasikitika kwamba hukuweza kuendelea na usajili. Tunatumai kuwa nawe tena hivi karibuni.',
     manageAccMenu: 'Je, ungependa kuangalia nini?',
     accBal: 'Salio la akaunti',
     transferMoney: 'Kuhamisha fedha',
     withdrawToMpesa: 'Toa pesa kwa M-Pesa',
-    viewHistory: 'Tazama Historia ya Muamala',
+    viewHistory: 'Tazama Historia ya Uchangiaji',
+    accBalRes: 'Salio la Akaunti yako ni',
   },
 }
 
@@ -136,8 +142,8 @@ export default class USSDService {
       response = `CON ${content[ussdUser.language].kId}`
     } else if (level === 7) {
       response = `CON ${content[ussdUser.language].formComplete}
-        1. Confirm Registration.
-        2. Cancel Registration.
+        1. ${content[ussdUser.language].confirmReg}
+        2. ${content[ussdUser.language].cancelReg}
       `
     } else if (level === 8) {
       if (textArray[7] === '1') {
@@ -194,7 +200,7 @@ export default class USSDService {
           balance = await CoinMarketCapService.getKESValue('USDC', USDCBalance)
         }
 
-        response = `END Your Account Balance is ${balance.toFixed(2)} KES`
+        response = `END ${content[ussdUser.language].accBalRes} ${balance.toFixed(2)} KES`
       } else if (textArray[1] === '2') {
         // TODO: Handle Transfer Logic
         response = ``
@@ -226,7 +232,7 @@ export default class USSDService {
         ussdUser.language = 'swahili'
         await ussdUser.save()
 
-        response = `END You have successfully Changed Your Language`
+        response = `END Umefanikiwa Kubadilisha Lugha Yako`
       }
     }
     return response

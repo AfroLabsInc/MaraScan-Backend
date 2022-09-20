@@ -20,19 +20,13 @@ class BeneficiaryEthereumAccountService extends Provider {
   public async checkBeneficiaryBalance(beneficiaryId: number) {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
 
-    console.log(beneficiary)
-
     const contracts = new Contracts(Env.get('NETWORK'))
 
     const usdcContract = await contracts.usdcContract()
 
-    console.log(usdcContract)
-
     let balance = await usdcContract.balanceOf(beneficiary.ethereumAccountAddress)
 
     balance = BigNumber.from(balance).toNumber()
-
-    console.log(balance)
 
     return Number(balance / Math.pow(10, 6))
   }
