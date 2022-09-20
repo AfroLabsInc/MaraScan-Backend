@@ -8,8 +8,12 @@ export default class Provider {
     this.provider = new providers.JsonRpcProvider(NetworkUtils.getRpcUrl(network))
   }
 
-  public getProxyAddress(): string {
-    return NetworkUtils.getProxyAddress(this.network)
+  public getMarascanProxyAddress(): string {
+    return NetworkUtils.getMarascanProxyAddress(this.network)
+  }
+
+  public getMarascanOperationProxyAddress(): string {
+    return NetworkUtils.getMarascanOperationProxyAddress(this.network)
   }
 
   public getUSDCAddress(): string {

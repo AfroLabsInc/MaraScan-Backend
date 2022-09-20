@@ -19,6 +19,25 @@ export const marascanAddresses = [
   },
 ] as { network: string; address: string }[]
 
+export const marascanOperationAddresses = [
+  {
+    network: 'mainnet',
+    address: '',
+  },
+  {
+    network: 'goerli',
+    address: Env.get('GOERLI_MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS'),
+  },
+  {
+    network: 'polygon',
+    address: '',
+  },
+  {
+    network: 'bsc',
+    address: '',
+  },
+] as { network: string; address: string }[]
+
 export const usdcAddresses = [
   {
     network: 'mainnet',

@@ -54,6 +54,8 @@ export default Env.rules({
 
   GOERLI_MARASCAN_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
 
+  GOERLI_MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
+
   GOERLI_USDC_CONTRACT_ADDRESS: Env.schema.string(),
 
   MPESA_CONSUMER_KEY: Env.schema.string(),

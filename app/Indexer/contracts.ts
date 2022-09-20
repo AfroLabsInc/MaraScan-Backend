@@ -3,6 +3,7 @@ import maraAbi from './abi/marascan.json'
 import Provider from './connection/provider'
 import CreateWallet from './connection/wallet'
 import usdcAbi from './abi/erc20.json'
+import maraOperationAbi from './abi/marascanOperation.json'
 
 export default class Contracts extends Provider {
   private wallet: Wallet
@@ -20,7 +21,16 @@ export default class Contracts extends Provider {
       maraAbi.bytecode,
       await this.initializeSinger()
     )
-    return contract.attach(this.getProxyAddress())
+    return contract.attach(this.getMarascanProxyAddress())
+  }
+
+  public async marascanOperationsContract() {
+    const contract = new ContractFactory(
+      maraOperationAbi.abi,
+      maraOperationAbi.bytecode,
+      await this.initializeSinger()
+    )
+    return contract.attach(this.getMarascanOperationProxyAddress())
   }
 
   public async usdcContract() {
