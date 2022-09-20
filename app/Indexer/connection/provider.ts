@@ -12,6 +12,10 @@ export default class Provider {
     return NetworkUtils.getProxyAddress(this.network)
   }
 
+  public getUSDCAddress(): string {
+    return NetworkUtils.getUSDCAddress(this.network)
+  }
+
   public getProvider(): providers.JsonRpcProvider {
     return this.provider
   }
@@ -19,5 +23,9 @@ export default class Provider {
   // set provider to preffered
   public setProvider(network: string) {
     this.provider = new providers.JsonRpcProvider(NetworkUtils.getRpcUrl(network))
+  }
+
+  public getRpcUrl(network) {
+    return NetworkUtils.getRpcUrl(network)
   }
 }

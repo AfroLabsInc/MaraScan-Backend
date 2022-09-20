@@ -1,5 +1,5 @@
 import networks from '../networks/network'
-import proxyAddress from '../networks/proxyAddress'
+import { marascanAddresses, usdcAddresses } from '../networks/proxyAddress'
 import { NetworkUtilsType } from '../types/types'
 export default class NetworkUtils extends NetworkUtilsType {
   public static getRpcUrl(network: string): string {
@@ -12,7 +12,12 @@ export default class NetworkUtils extends NetworkUtilsType {
   }
 
   public static getProxyAddress(network: string): string {
-    const n = proxyAddress.find((r) => network === r.network)!
+    const n = marascanAddresses.find((r) => network === r.network)!
+    return n.address
+  }
+
+  public static getUSDCAddress(network: string): string {
+    const n = usdcAddresses.find((r) => network === r.network)!
     return n.address
   }
 }

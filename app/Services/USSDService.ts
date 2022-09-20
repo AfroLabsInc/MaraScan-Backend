@@ -3,7 +3,7 @@ import Beneficiary from 'App/Models/Beneficiary'
 import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
-import Web3Service from './Web3Service'
+import BeneficiaryEthereumAccountService from './BeneficiaryEthereumAccountService'
 import CoinMarketCapService from './CoinMarketCapSevice'
 
 const content = {
@@ -138,7 +138,7 @@ export default class USSDService {
     } else if (level === 8) {
       if (textArray[7] === '1') {
         //Create an Ethereum Account for the user
-        const account = await Web3Service.createBeneficiaryAccount()
+        const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
         console.log(account.address)
         // create a record for the beneficiary
@@ -182,10 +182,12 @@ export default class USSDService {
     } else if (level === 2) {
       if (textArray[1] === '1') {
         // Get and Process Account Balance
-        const etherBalance = await Web3Service.checkBeneficiaryBalance(ussdUser.beneficiaryId)
+        const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
+          ussdUser.beneficiaryId
+        )
         let balance = 0.0
-        if (etherBalance !== 0) {
-          balance = await CoinMarketCapService.getKESValue('ETH', etherBalance)
+        if (USDCBalance !== 0) {
+          balance = await CoinMarketCapService.getKESValue('USDC', USDCBalance)
         }
 
         response = `END Your Account Balance is ${balance.toFixed(2)} KES`

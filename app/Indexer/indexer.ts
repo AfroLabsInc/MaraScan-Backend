@@ -1,13 +1,15 @@
 import MarascanService from 'App/Services/MarascanService'
 import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
+import Env from '@ioc:Adonis/Core/Env'
+
 import { DisbursedEventType, DonationEventType } from './types/types'
 
 const marascanContractIndex = async () => {
-  const contracts = new Contracts('goerli')
+  const contracts = new Contracts(Env.get('NETWORK'))
   const marascanContract = await contracts.marascanContract()
 
-  console.log(await marascanContract.USDC())
+  // console.log(await marascanContract.USDC())
 
   // Donation Event
   await marascanContract.on(

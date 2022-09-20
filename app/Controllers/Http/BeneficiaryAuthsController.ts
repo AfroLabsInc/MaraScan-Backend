@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Beneficiary from 'App/Models/Beneficiary'
-import Web3Service from 'App/Services/Web3Service'
+import BeneficiaryEthereumAccountService from 'App/Services/BeneficiaryEthereumAccountService'
 import BeneficiaryValidator from 'App/Validators/BeneficiaryValidator'
 
 export default class BeneficiaryAuthsController {
@@ -24,7 +24,7 @@ export default class BeneficiaryAuthsController {
   public async register({ request, auth }: HttpContextContract) {
     const payload = await BeneficiaryValidator.store({ ...request.all() })
 
-    const account = await Web3Service.createBeneficiaryAccount()
+    const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
     const beneficiary = await Beneficiary.create({
       ...payload,
