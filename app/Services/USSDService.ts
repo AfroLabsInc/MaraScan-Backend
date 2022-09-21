@@ -5,6 +5,7 @@ import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
 import BeneficiaryEthereumAccountService from './BeneficiaryEthereumAccountService'
 import CoinMarketCapService from './CoinMarketCapSevice'
+import BeneficiaryLand from 'App/Models/BeneficiaryLand'
 
 const content = {
   english: {
@@ -21,6 +22,7 @@ const content = {
     region: 'Enter your region',
     address: 'Enter your address',
     kId: 'Enter your Kenya ID Number',
+    titleDeedId: 'Enter Your Title Deed Number',
     formComplete: 'Thanks for Completing the form, reply with',
     confirmReg: 'Confirm Registration',
     cancelReg: 'Cancel Registration.',
@@ -49,6 +51,7 @@ const content = {
     region: 'Ingiza eneo lako',
     address: 'Weka anwani yako',
     kId: 'Weka Nambari yako ya Kitambulisho cha Kenya',
+    titleDeedId: 'Weka Nambari Yako ya Hatimiliki',
     formComplete: 'Asante kwa Kujaza fomu, jibu na',
     registerDone: 'Hongera, maelezo yako yamewasilishwa na yatakaguliwa na Wasimamizi wetu',
     confirmReg: 'Thibitisha Usajili.',
@@ -141,11 +144,13 @@ export default class USSDService {
     } else if (level === 6) {
       response = `CON ${content[ussdUser.language].kId}`
     } else if (level === 7) {
+      response = `CON ${content[ussdUser.language].titleDeedId}`
+    } else if (level === 8) {
       response = `CON ${content[ussdUser.language].formComplete}
         1. ${content[ussdUser.language].confirmReg}
         2. ${content[ussdUser.language].cancelReg}
       `
-    } else if (level === 8) {
+    } else if (level === 9) {
       if (textArray[7] === '1') {
         //Create an Ethereum Account for the user
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
@@ -169,6 +174,11 @@ export default class USSDService {
         await BeneficiaryKyc.create({
           identificationNumber: textArray[6],
           beneficiaryId: beneficiary.id,
+        })
+
+        await BeneficiaryLand.create({
+          beneficiaryId: beneficiary.id,
+          titleDeedIdentification: textArray[7],
         })
 
         response = `END ${content[ussdUser.language].registerDone}`
