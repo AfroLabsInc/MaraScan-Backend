@@ -54,6 +54,8 @@ class BeneficiaryEthereumAccountService extends Provider {
     const contracts = new Contracts(Env.get('NETWORK'))
 
     const maraScanOperationsContract = await contracts.marascanOperationsContract()
+    const nonce = Web3.utils.randomHex(32)
+    const validBefore = Math.floor(Date.now() / 1000) + 3600
 
     const dataType = {
       types: {
@@ -84,8 +86,8 @@ class BeneficiaryEthereumAccountService extends Provider {
         to: maraScanOperationsContract.address,
         value: formatedAmount, // amount
         validAfter: 0,
-        validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
-        nonce: Web3.utils.randomHex(32),
+        validBefore: validBefore, // Valid for an hour
+        nonce: nonce,
       },
     }
 
