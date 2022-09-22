@@ -38,7 +38,7 @@ export const encryptText = (text: string) => {
   return encryptedString
 }
 
-export const decryptText = (encryptedString: string) => {
+export const decryptText = (encryptedString: string): string => {
   const cryptr = new Cryptr(Env.get('ENCRYPTION_SECRET'))
 
   const decryptedString = cryptr.decrypt(encryptedString)

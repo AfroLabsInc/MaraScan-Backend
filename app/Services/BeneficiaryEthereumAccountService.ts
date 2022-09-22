@@ -41,7 +41,7 @@ class BeneficiaryEthereumAccountService extends Provider {
    */
   public async withdrawFromWallet(beneficiaryId: number, amount: number) {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
-    const privateKey = await decryptText(beneficiary.ethereumAccountPrivateKey)
+    const privateKey: string = await decryptText(beneficiary.ethereumAccountPrivateKey)
 
     // implementing KES to USDC price conversion
     const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
