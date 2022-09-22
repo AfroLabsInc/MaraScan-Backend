@@ -88,7 +88,10 @@ class BeneficiaryEthereumAccountService extends Provider {
 
     // create signature
     const signature = signTypedData({
-      privateKey: Buffer.from(privateKey, 'hex'),
+      privateKey: Buffer.from(
+        '0x7f81d828a1ac36d802938537e27a25d2050dd16cc0ca472bcda30bb6b7acb3cd',
+        'hex'
+      ),
       data: {
         types: dataType.types,
         primaryType: 'TransferWithAuthorization',
