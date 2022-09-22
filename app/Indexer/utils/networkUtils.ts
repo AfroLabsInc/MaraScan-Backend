@@ -29,4 +29,9 @@ export default class NetworkUtils extends NetworkUtilsType {
     const n = usdcAddresses.find((r) => network === r.network)!
     return n.address
   }
+
+  public static getChainId(network: string): number {
+    const n = networks.find((r) => network === r.network)!
+    return n.chainId
+  }
 }

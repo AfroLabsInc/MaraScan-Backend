@@ -32,4 +32,8 @@ export default class Provider {
   public getRpcUrl(network) {
     return NetworkUtils.getRpcUrl(network)
   }
+
+  public getChainId(network) {
+    return NetworkUtils.getChainId(network)
+  }
 }
