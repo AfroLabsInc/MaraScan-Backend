@@ -43,6 +43,9 @@ class BeneficiaryEthereumAccountService extends Provider {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
     const privateKey = await decryptText(beneficiary.ethereumAccountPrivateKey)
 
+    // implementing KES to USDC price conversion
+    const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
+
     // implementing EIP3009
     const contracts = new Contracts(Env.get('NETWORK'))
 
@@ -75,7 +78,7 @@ class BeneficiaryEthereumAccountService extends Provider {
       message: {
         from: beneficiary.ethereumAccountAddress,
         to: maraScanOperationsContract.address,
-        value: Math.pow(10, 6) * amount, // amount
+        value: Math.pow(10, 6) * amountUSDC, // amount
         validAfter: 0,
         validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
         nonce: Web3.utils.randomHex(32),
