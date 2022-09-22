@@ -202,9 +202,9 @@ export default class USSDService {
   }
   private static async manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     const beneficiary = await Beneficiary.findByOrFail('id', ussdUser.beneficiaryId)
-    console.log(beneficiary)
     let response
     if (beneficiary.password) {
+      console.log(true)
       if (level === 1) {
         response = `CON ${content[ussdUser.language].manageAccMenu}
         1. ${content[ussdUser.language].accBal}
