@@ -34,6 +34,7 @@ const content = {
     accBal: 'Account balance',
     transferMoney: 'Transfer money',
     withdrawToMpesa: 'Withdraw to M-Pesa',
+    amountToWithdraw: 'Enter Amount To Withdraw',
     viewHistory: 'View Donation History',
     accBalRes: 'Your Account Balance is',
   },
@@ -62,6 +63,7 @@ const content = {
     accBal: 'Salio la akaunti',
     transferMoney: 'Kuhamisha fedha',
     withdrawToMpesa: 'Toa pesa kwa M-Pesa',
+    amountToWithdraw: 'Weka Kiasi cha Kutoa',
     viewHistory: 'Tazama Historia ya Uchangiaji',
     accBalRes: 'Salio la Akaunti yako ni',
   },
@@ -216,7 +218,7 @@ export default class USSDService {
         response = ``
       } else if (textArray[1] === '3') {
         if (level === 2) {
-          response = `CON Enter Amount To Withdraw`
+          response = `CON ${content[ussdUser.language].amountToWithdraw}`
         } else if (level === 3) {
           // TODO: Handle Withdrawal Logic
           response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
