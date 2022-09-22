@@ -214,17 +214,18 @@ export default class USSDService {
 
         response = `END ${content[ussdUser.language].accBalRes} ${balance.toFixed(2)} KES`
       } else if (textArray[1] === '2') {
-        // TODO: Handle Transfer Logic
-        response = ``
+        response = `CON Enter Amount To Transfer`
       } else if (textArray[1] === '3') {
-        if (level === 2) {
-          response = `CON ${content[ussdUser.language].amountToWithdraw}`
-        } else if (level === 3) {
-          // TODO: Handle Withdrawal Logic
-          response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
-        }
+        response = `CON ${content[ussdUser.language].amountToWithdraw}`
       } else if (textArray[1] === '4') {
         response = ``
+      }
+    } else if (level === 3) {
+      if (textArray[1] === 2) {
+        // TODO: Handle Transfer Logic
+      } else if (textArray[1] === 2) {
+        // TODO: Handle Withdrawal Logic
+        response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
       }
     }
 
