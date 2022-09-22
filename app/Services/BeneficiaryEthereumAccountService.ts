@@ -80,7 +80,9 @@ class BeneficiaryEthereumAccountService extends Provider {
       message: {
         from: beneficiary.ethereumAccountAddress,
         to: maraScanOperationsContract.address,
-        value: Math.pow(10, 6) * amountUSDC, // amount
+        value: Number(Math.pow(10, 6) * amountUSDC)
+          .toString()
+          .split('.')[0], // amount
         validAfter: 0,
         validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
         nonce: Web3.utils.randomHex(32),
