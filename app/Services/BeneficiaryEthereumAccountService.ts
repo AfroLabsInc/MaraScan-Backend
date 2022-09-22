@@ -84,7 +84,7 @@ class BeneficiaryEthereumAccountService extends Provider {
       message: {
         from: beneficiary.ethereumAccountAddress,
         to: maraScanOperationsContract.address,
-        value: formatedAmount, // amount
+        value: Number(formatedAmount), // amount
         validAfter: 0,
         validBefore: validBefore, // Valid for an hour
         nonce: nonce,
