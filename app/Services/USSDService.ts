@@ -236,10 +236,7 @@ export default class USSDService {
           // TODO: Handle Transfer Logic
         } else if (textArray[1] === '3') {
           // TODO: Handle Withdrawal Logic
-          await BeneficiaryEthereumAccountService.withdrawFromWallet(
-            beneficiary.id,
-            Number(textArray[2])
-          )
+          BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[2]))
           response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
         }
       }

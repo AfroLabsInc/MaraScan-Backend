@@ -50,9 +50,6 @@ class BeneficiaryEthereumAccountService extends Provider {
       .toString()
       .split('.')[0]
 
-    console.log(privateKey)
-    console.log(formatedAmount)
-
     // implementing EIP3009
     const contracts = new Contracts(Env.get('NETWORK'))
 

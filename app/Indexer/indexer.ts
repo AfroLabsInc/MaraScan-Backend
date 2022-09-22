@@ -27,13 +27,6 @@ const marascanContractIndex = async () => {
     }
   )
 
-  // let eventFilter = marascanContract.filters.Disbursed()
-  // let events = await marascanContract.queryFilter(eventFilter)
-
-  // console.log(events)
-
-  // console.log(marascanContract.filters)
-
   // Disbursement Event
   await marascanContract.on('Disbursed', async (donation) => {
     let dataArray = donation.toString().split(',')
