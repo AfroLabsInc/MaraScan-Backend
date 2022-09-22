@@ -223,7 +223,7 @@ export default class USSDService {
     } else if (level === 3) {
       if (textArray[1] === '2') {
         // TODO: Handle Transfer Logic
-      } else if (textArray[1] === '2') {
+      } else if (textArray[1] === '3') {
         // TODO: Handle Withdrawal Logic
         response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
       }
