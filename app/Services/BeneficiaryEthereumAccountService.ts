@@ -52,6 +52,7 @@ class BeneficiaryEthereumAccountService extends Provider {
 
     // implementing EIP3009
     const contracts = new Contracts(Env.get('NETWORK'))
+    const usdcContract = await contracts.usdcContract()
 
     const maraScanOperationsContract = await contracts.marascanOperationsContract()
     const nonce = Web3.utils.randomHex(32)
@@ -78,12 +79,12 @@ class BeneficiaryEthereumAccountService extends Provider {
         name: 'USD Coin',
         version: '2',
         chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
-        verifyingContract: '0x7adf4b682f671b0B6Ff5dF349d4AD5671c765c7f',
+        verifyingContract: usdcContract.address,
       },
       primaryType: 'TransferWithAuthorization',
       message: {
-        from: '0xF10dc6fee78b300A5B3AB9cc9470264265a2d6Af',
-        to: '0x7adf4b682f671b0B6Ff5dF349d4AD5671c765c7f',
+        from: beneficiary.ethereumAccountAddress,
+        to: maraScanOperationsContract.address,
         value: Number(formatedAmount), // amount
         validAfter: 0,
         validBefore: validBefore, // Valid for an hour
