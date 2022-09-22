@@ -202,6 +202,7 @@ export default class USSDService {
   }
   private static async manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
     const beneficiary = await Beneficiary.findByOrFail('id', ussdUser.beneficiaryId)
+    console.log(beneficiary)
     let response
     if (beneficiary.password) {
       if (level === 1) {
