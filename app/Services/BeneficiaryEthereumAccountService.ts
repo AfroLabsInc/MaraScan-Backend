@@ -84,14 +84,10 @@ class BeneficiaryEthereumAccountService extends Provider {
         nonce: Web3.utils.randomHex(32),
       },
     }
-    console.log(privateKey)
 
     // create signature
     const signature = signTypedData({
-      privateKey: Buffer.from(
-        '0x7f81d828a1ac36d802938537e27a25d2050dd16cc0ca472bcda30bb6b7acb3cd',
-        'hex'
-      ),
+      privateKey: Buffer.from(privateKey.substring(2), 'hex'),
       data: {
         types: dataType.types,
         primaryType: 'TransferWithAuthorization',
@@ -117,8 +113,6 @@ class BeneficiaryEthereumAccountService extends Provider {
       s
     )
     console.log(ress)
-
-    console.log(beneficiary)
   }
 }
 
