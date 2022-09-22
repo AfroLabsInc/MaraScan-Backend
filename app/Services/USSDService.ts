@@ -221,10 +221,9 @@ export default class USSDService {
       } else if (level === 2) {
         response = `CON ${content[ussdUser.language].enterPassword}`
       } else if (level === 3) {
-        console.log(textArray[2])
         //  Authenticate
-        const passwordHash = await Hash.make(textArray[2])
-        if (passwordHash !== beneficiary.password) {
+        const passwordHash = await Hash.verify(beneficiary.password, textArray[2])
+        if (!passwordHash) {
           return `END ${content[ussdUser.language].incorrectPassword}`
         }
         if (textArray[1] === '1') {
@@ -246,9 +245,9 @@ export default class USSDService {
           response = ``
         }
       } else if (level === 4) {
-        if (textArray[2] === '2') {
+        if (textArray[1] === '2') {
           // TODO: Handle Transfer Logic
-        } else if (textArray[2] === '3') {
+        } else if (textArray[1] === '3') {
           // TODO: Handle Withdrawal Logic
           BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
           response = `END ${textArray[3]} withdrawn to ${data.phoneNumber}`
