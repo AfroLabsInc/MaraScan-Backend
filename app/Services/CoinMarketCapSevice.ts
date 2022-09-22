@@ -46,7 +46,7 @@ export default class CoinMarketCapService {
       )
 
       if (response.data.status.error_code === 0) {
-        return response.data.data[0].quote.KES.price
+        return response.data.data[0].quote.USDC.price
       }
     } catch (error) {
       errorHandler(error)

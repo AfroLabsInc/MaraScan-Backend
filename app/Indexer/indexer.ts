@@ -2,8 +2,14 @@ import MarascanService from 'App/Services/MarascanService'
 import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
 import Env from '@ioc:Adonis/Core/Env'
+import CoinMarketCapService from 'App/Services/CoinMarketCapSevice'
 
 import { DisbursedEventType, DonationEventType } from './types/types'
+
+const get = async () => {
+  console.log(await CoinMarketCapService.getUSDValue('KES', 100))
+}
+get()
 
 const marascanContractIndex = async () => {
   const contracts = new Contracts(Env.get('NETWORK'))

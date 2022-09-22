@@ -43,13 +43,8 @@ class BeneficiaryEthereumAccountService extends Provider {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
     const privateKey = await decryptText(beneficiary.ethereumAccountPrivateKey)
 
-    console.log(privateKey)
-    console.log(amount)
-
     // implementing KES to USDC price conversion
     const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
-
-    console.log(amountUSDC)
 
     // implementing EIP3009
     const contracts = new Contracts(Env.get('NETWORK'))
