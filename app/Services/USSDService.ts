@@ -215,8 +215,12 @@ export default class USSDService {
         // TODO: Handle Transfer Logic
         response = ``
       } else if (textArray[1] === '3') {
-        // TODO: Handle Withdrawal Logic
-        response = `END Money withdrawn to ${data.phoneNumber}`
+        if (level === 2) {
+          response = `CON Enter Amount To Withdraw`
+        } else if (level === 3) {
+          // TODO: Handle Withdrawal Logic
+          response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
+        }
       } else if (textArray[1] === '4') {
         response = ``
       }
