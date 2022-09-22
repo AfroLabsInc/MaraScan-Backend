@@ -6,6 +6,7 @@ import Contracts from 'App/Indexer/contracts'
 import Provider from 'App/Indexer/connection/provider'
 import CoinMarketCapService from './CoinMarketCapSevice'
 import { decryptText } from 'App/Utils'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 
 class BeneficiaryEthereumAccountService extends Provider {
   private web3: Web3
@@ -67,7 +68,7 @@ class BeneficiaryEthereumAccountService extends Provider {
       domain: {
         name: 'USD Coin',
         version: '2',
-        chainId: 5, // chainId of network
+        chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
         verifyingContract: maraScanOperationsContract.address,
       },
       primaryType: 'TransferWithAuthorization',
@@ -80,6 +81,35 @@ class BeneficiaryEthereumAccountService extends Provider {
         nonce: Web3.utils.randomHex(32),
       },
     }
+
+    // create signature
+    const signature = signTypedData({
+      privateKey: Buffer.from(privateKey, 'hex'),
+      data: {
+        types: dataType.types,
+        primaryType: 'TransferWithAuthorization',
+        domain: dataType.domain,
+        message: dataType.message,
+      },
+      version: SignTypedDataVersion.V4,
+    })
+    const v = '0x' + signature.slice(130, 132)
+    const r = signature.slice(0, 66)
+    const s = '0x' + signature.slice(66, 130)
+    console.log(v, r, s)
+
+    const ress = await maraScanOperationsContract._gaslessTransfer(
+      dataType.message.from,
+      dataType.message.to,
+      dataType.message.value,
+      dataType.message.validAfter,
+      dataType.message.validBefore,
+      dataType.message.nonce,
+      v,
+      r,
+      s
+    )
+    console.log(ress)
 
     console.log(beneficiary)
   }
