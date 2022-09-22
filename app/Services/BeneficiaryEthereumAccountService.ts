@@ -6,6 +6,7 @@ import Contracts from 'App/Indexer/contracts'
 import Provider from 'App/Indexer/connection/provider'
 import CoinMarketCapService from './CoinMarketCapSevice'
 import { decryptText } from 'App/Utils'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 
 class BeneficiaryEthereumAccountService extends Provider {
   private web3: Web3
@@ -50,36 +51,65 @@ class BeneficiaryEthereumAccountService extends Provider {
     const dataType = {
       types: {
         EIP712Domain: [
-          { name: "name", type: "string" },
-          { name: "version", type: "string" },
-          { name: "chainId", type: "uint256" },
-          { name: "verifyingContract", type: "address" },
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+          { name: 'verifyingContract', type: 'address' },
         ],
         TransferWithAuthorization: [
-          { name: "from", type: "address" },
-          { name: "to", type: "address" },
-          { name: "value", type: "uint256" },
-          { name: "validAfter", type: "uint256" },
-          { name: "validBefore", type: "uint256" },
-          { name: "nonce", type: "bytes32" },
+          { name: 'from', type: 'address' },
+          { name: 'to', type: 'address' },
+          { name: 'value', type: 'uint256' },
+          { name: 'validAfter', type: 'uint256' },
+          { name: 'validBefore', type: 'uint256' },
+          { name: 'nonce', type: 'bytes32' },
         ],
       },
       domain: {
-        name: "USD Coin",
-        version: "2",
-        chainId: 5,  // chainId of network
+        name: 'USD Coin',
+        version: '2',
+        chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
         verifyingContract: maraScanOperationsContract.address,
       },
-      primaryType: "TransferWithAuthorization",
+      primaryType: 'TransferWithAuthorization',
       message: {
         from: beneficiary.ethereumAccountAddress,
         to: maraScanOperationsContract.address,
-        value: Math.pow(10, 6) * amount,  // amount
+        value: Math.pow(10, 6) * amount, // amount
         validAfter: 0,
         validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
         nonce: Web3.utils.randomHex(32),
       },
-    };
+    }
+
+    // create signature
+    const signature = signTypedData({
+      privateKey: Buffer.from(privateKey, 'hex'),
+      data: {
+        types: dataType.types,
+        primaryType: 'TransferWithAuthorization',
+        domain: dataType.domain,
+        message: dataType.message,
+      },
+      version: SignTypedDataVersion.V4,
+    })
+    const v = '0x' + signature.slice(130, 132)
+    const r = signature.slice(0, 66)
+    const s = '0x' + signature.slice(66, 130)
+    console.log(v, r, s)
+
+    const ress = await maraScanOperationsContract._gaslessTransfer(
+      dataType.message.from,
+      dataType.message.to,
+      dataType.message.value,
+      dataType.message.validAfter,
+      dataType.message.validBefore,
+      dataType.message.nonce,
+      v,
+      r,
+      s
+    )
+    console.log(ress)
 
     console.log(beneficiary)
   }
