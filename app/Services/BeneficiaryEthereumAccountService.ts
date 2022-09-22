@@ -4,6 +4,7 @@ import Env from '@ioc:Adonis/Core/Env'
 import Beneficiary from 'App/Models/Beneficiary'
 import Contracts from 'App/Indexer/contracts'
 import Provider from 'App/Indexer/connection/provider'
+import { decryptText } from 'App/Utils'
 
 class BeneficiaryEthereumAccountService extends Provider {
   private web3: Web3
