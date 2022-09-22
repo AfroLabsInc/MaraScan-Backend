@@ -253,8 +253,8 @@ export default class USSDService {
           response = `END ${content[ussdUser.language].passwordSetFailed}`
         }
       }
-      return response
     }
+    return response
   }
 
   private static async changeLanguage(textArray, level, ussdUser: UssdUser) {
