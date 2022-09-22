@@ -84,6 +84,7 @@ class BeneficiaryEthereumAccountService extends Provider {
         nonce: Web3.utils.randomHex(32),
       },
     }
+    console.log(privateKey)
 
     // create signature
     const signature = signTypedData({
