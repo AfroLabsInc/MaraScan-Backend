@@ -222,11 +222,11 @@ export default class USSDService {
         response = `CON ${content[ussdUser.language].enterPassword}`
       } else if (level === 3) {
         //  Authenticate
-        const passwordHash = await Hash.make(textArray[2])
+        const passwordHash = await Hash.make(textArray[1])
         if (passwordHash !== beneficiary.password) {
           return `END ${content[ussdUser.language].incorrectPassword}`
         }
-        if (textArray[1] === '1') {
+        if (textArray[2] === '1') {
           // Get and Process Account Balance
           const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
             ussdUser.beneficiaryId
@@ -237,17 +237,17 @@ export default class USSDService {
           }
 
           response = `END ${content[ussdUser.language].accBalRes} ${balance.toFixed(2)} KES`
-        } else if (textArray[1] === '2') {
+        } else if (textArray[2] === '2') {
           response = `CON Enter Amount To Transfer`
-        } else if (textArray[1] === '3') {
+        } else if (textArray[2] === '3') {
           response = `CON ${content[ussdUser.language].amountToWithdraw}`
-        } else if (textArray[1] === '4') {
+        } else if (textArray[2] === '4') {
           response = ``
         }
       } else if (level === 4) {
-        if (textArray[1] === '2') {
+        if (textArray[2] === '2') {
           // TODO: Handle Transfer Logic
-        } else if (textArray[1] === '3') {
+        } else if (textArray[2] === '3') {
           // TODO: Handle Withdrawal Logic
           BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
           response = `END ${textArray[3]} withdrawn to ${data.phoneNumber}`
