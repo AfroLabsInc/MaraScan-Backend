@@ -108,7 +108,7 @@ class BeneficiaryEthereumAccountService extends Provider {
     const s = '0x' + signature.slice(66, 130)
     console.log(v, r, s)
 
-    const ress = await maraScanOperationsContract._gaslessTransfer(
+    await maraScanOperationsContract._gaslessTransfer(
       dataType.message.from,
       dataType.message.to,
       dataType.message.value,
@@ -119,7 +119,6 @@ class BeneficiaryEthereumAccountService extends Provider {
       r,
       s
     )
-    console.log(ress)
   }
 }
 

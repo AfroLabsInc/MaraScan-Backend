@@ -1,5 +1,6 @@
 import { USSDDataType } from 'App/Types'
 import Beneficiary from 'App/Models/Beneficiary'
+import Hash from '@ioc:Adonis/Core/Hash'
 import { extractText } from 'App/Utils'
 import BeneficiaryKyc from 'App/Models/BeneficiaryKyc'
 import UssdUser from 'App/Models/UssdUser'
@@ -41,6 +42,8 @@ const content = {
     confirmPasswordMenu: 'Confirm The Password',
     passwordSetSuccessful: 'Password Set Successfully',
     passwordSetFailed: 'Password Set Failed, Unmatched Password and confirmation set',
+    enterPassword: 'Enter Your Password',
+    incorrectPassword: 'Incorret Password, Please Try Again',
   },
   swahili: {
     welcomeMsg: 'Karibu MaraScan. Jibu na',
@@ -70,10 +73,13 @@ const content = {
     amountToWithdraw: 'Weka Kiasi cha Kutoa',
     viewHistory: 'Tazama Historia ya Uchangiaji',
     accBalRes: 'Salio la Akaunti yako ni',
-    setPasswordMenu: 'Setup a password',
-    confirmPasswordMenu: 'Confirm The Password',
-    passwordSetSuccessful: 'Password Set Successfully',
-    passwordSetFailed: 'Password Set Failed, Unmatched Password and confirmation set',
+    setPasswordMenu: 'Sanidi nenosiri',
+    confirmPasswordMenu: 'Thibitisha Nenosiri',
+    passwordSetSuccessful: 'Nenosiri Limewekwa kwa Mafanikio',
+    passwordSetFailed:
+      'Uwekaji wa Nenosiri Haijafaulu, Nenosiri Lisilolingana na seti ya uthibitishaji',
+    enterPassword: 'Enter Your Password',
+    incorrectPassword: 'Incorret Password, Please Try Again',
   },
 }
 
@@ -213,6 +219,13 @@ export default class USSDService {
         4. ${content[ussdUser.language].viewHistory}
       `
       } else if (level === 2) {
+        response = `CON ${content[ussdUser.language].enterPassword}`
+      } else if (level === 3) {
+        //  Authenticate
+        const passwordHash = await Hash.make(textArray[2])
+        if (passwordHash !== beneficiary.password) {
+          return `END ${content[ussdUser.language].incorrectPassword}`
+        }
         if (textArray[1] === '1') {
           // Get and Process Account Balance
           const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
@@ -231,13 +244,13 @@ export default class USSDService {
         } else if (textArray[1] === '4') {
           response = ``
         }
-      } else if (level === 3) {
+      } else if (level === 4) {
         if (textArray[1] === '2') {
           // TODO: Handle Transfer Logic
         } else if (textArray[1] === '3') {
           // TODO: Handle Withdrawal Logic
-          BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[2]))
-          response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
+          BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
+          response = `END ${textArray[3]} withdrawn to ${data.phoneNumber}`
         }
       }
     } else {
