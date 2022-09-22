@@ -46,6 +46,8 @@ class BeneficiaryEthereumAccountService extends Provider {
     // implementing KES to USDC price conversion
     const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
 
+    console.log(amountUSDC)
+
     // implementing EIP3009
     const contracts = new Contracts(Env.get('NETWORK'))
 
