@@ -44,6 +44,7 @@ class BeneficiaryEthereumAccountService extends Provider {
     const privateKey = await decryptText(beneficiary.ethereumAccountPrivateKey)
 
     console.log(privateKey)
+    console.log(amount)
 
     // implementing KES to USDC price conversion
     const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
