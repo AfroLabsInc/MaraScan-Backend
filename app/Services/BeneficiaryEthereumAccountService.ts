@@ -78,12 +78,12 @@ class BeneficiaryEthereumAccountService extends Provider {
         name: 'USD Coin',
         version: '2',
         chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
-        verifyingContract: maraScanOperationsContract.address,
+        verifyingContract: '0x7adf4b682f671b0B6Ff5dF349d4AD5671c765c7f',
       },
       primaryType: 'TransferWithAuthorization',
       message: {
-        from: beneficiary.ethereumAccountAddress,
-        to: maraScanOperationsContract.address,
+        from: '0xF10dc6fee78b300A5B3AB9cc9470264265a2d6Af',
+        to: '0x7adf4b682f671b0B6Ff5dF349d4AD5671c765c7f',
         value: Number(formatedAmount), // amount
         validAfter: 0,
         validBefore: validBefore, // Valid for an hour
