@@ -58,6 +58,9 @@ export default Env.rules({
 
   GOERLI_USDC_CONTRACT_ADDRESS: Env.schema.string(),
 
+  MASTER_WALLET_ADDRESS: Env.schema.string(),
+  MASTER_WALLET_PRIVATE_KEY: Env.schema.string(),
+
   MPESA_CONSUMER_KEY: Env.schema.string(),
   MPESA_SECRET_KEY: Env.schema.string(),
   MPESA_INITIATOR_PASSWORD: Env.schema.string(),

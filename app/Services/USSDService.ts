@@ -37,6 +37,10 @@ const content = {
     amountToWithdraw: 'Enter Amount To Withdraw',
     viewHistory: 'View Donation History',
     accBalRes: 'Your Account Balance is',
+    setPasswordMenu: 'Setup a password',
+    confirmPasswordMenu: 'Confirm The Password',
+    passwordSetSuccessful: 'Password Set Successfully',
+    passwordSetFailed: 'Password Set Failed, Unmatched Password and confirmation set',
   },
   swahili: {
     welcomeMsg: 'Karibu MaraScan. Jibu na',
@@ -66,6 +70,10 @@ const content = {
     amountToWithdraw: 'Weka Kiasi cha Kutoa',
     viewHistory: 'Tazama Historia ya Uchangiaji',
     accBalRes: 'Salio la Akaunti yako ni',
+    setPasswordMenu: 'Setup a password',
+    confirmPasswordMenu: 'Confirm The Password',
+    passwordSetSuccessful: 'Password Set Successfully',
+    passwordSetFailed: 'Password Set Failed, Unmatched Password and confirmation set',
   },
 }
 
@@ -193,44 +201,61 @@ export default class USSDService {
     return response
   }
   private static async manageAccount(data: USSDDataType, textArray, level, ussdUser: UssdUser) {
+    const beneficiary = await Beneficiary.findByOrFail('id', ussdUser.beneficiaryId)
     let response
-    if (level === 1) {
-      response = `CON ${content[ussdUser.language].manageAccMenu}
+    if (beneficiary.password) {
+      if (level === 1) {
+        response = `CON ${content[ussdUser.language].manageAccMenu}
         1. ${content[ussdUser.language].accBal}
         2. ${content[ussdUser.language].transferMoney}
         3. ${content[ussdUser.language].withdrawToMpesa}
         4. ${content[ussdUser.language].viewHistory}
       `
-    } else if (level === 2) {
-      if (textArray[1] === '1') {
-        // Get and Process Account Balance
-        const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
-          ussdUser.beneficiaryId
-        )
-        let balance = 0.0
-        if (USDCBalance !== 0) {
-          balance = await CoinMarketCapService.getKESValue('USDC', USDCBalance)
+      } else if (level === 2) {
+        if (textArray[1] === '1') {
+          // Get and Process Account Balance
+          const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
+            ussdUser.beneficiaryId
+          )
+          let balance = 0.0
+          if (USDCBalance !== 0) {
+            balance = await CoinMarketCapService.getKESValue('USDC', USDCBalance)
+          }
+
+          response = `END ${content[ussdUser.language].accBalRes} ${balance.toFixed(2)} KES`
+        } else if (textArray[1] === '2') {
+          response = `CON Enter Amount To Transfer`
+        } else if (textArray[1] === '3') {
+          response = `CON ${content[ussdUser.language].amountToWithdraw}`
+        } else if (textArray[1] === '4') {
+          response = ``
         }
-
-        response = `END ${content[ussdUser.language].accBalRes} ${balance.toFixed(2)} KES`
-      } else if (textArray[1] === '2') {
-        response = `CON Enter Amount To Transfer`
-      } else if (textArray[1] === '3') {
-        response = `CON ${content[ussdUser.language].amountToWithdraw}`
-      } else if (textArray[1] === '4') {
-        response = ``
+      } else if (level === 3) {
+        if (textArray[1] === '2') {
+          // TODO: Handle Transfer Logic
+        } else if (textArray[1] === '3') {
+          // TODO: Handle Withdrawal Logic
+          response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
+        }
       }
-    } else if (level === 3) {
-      if (textArray[1] === '2') {
-        // TODO: Handle Transfer Logic
-      } else if (textArray[1] === '3') {
-        // TODO: Handle Withdrawal Logic
-        response = `END ${textArray[2]} withdrawn to ${data.phoneNumber}`
+    } else {
+      if (level === 1) {
+        response = `CON ${content[ussdUser.language].setPasswordMenu}:`
+      } else if (level === 2) {
+        response = `CON ${content[ussdUser.language].confirmPasswordMenu}:`
+      } else if (level === 3) {
+        if (textArray[1] === textArray[2]) {
+          beneficiary.password = textArray[2]
+          await beneficiary.save()
+          response = `END ${content[ussdUser.language].passwordSetSuccessful}`
+        } else {
+          response = `END ${content[ussdUser.language].passwordSetFailed}`
+        }
       }
+      return response
     }
-
-    return response
   }
+
   private static async changeLanguage(textArray, level, ussdUser: UssdUser) {
     let response
 
