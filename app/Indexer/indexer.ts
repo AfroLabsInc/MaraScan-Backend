@@ -3,6 +3,8 @@ import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
 import Env from '@ioc:Adonis/Core/Env'
 import { DisbursedEventType, DonationEventType } from './types/types'
+import BeneficiaryWithdrawal from 'App/Models/BeneficiaryWithdrawal'
+import Beneficiary from 'App/Models/Beneficiary'
 // import CircleService from 'App/Services/CircleService'
 
 // const test = async () => {
@@ -50,14 +52,22 @@ const marascanContractIndex = async () => {
   })
 }
 
-// const maraScanOperationsIndex = async () => {
-//   const contracts = new Contracts(Env.get('NETWORK'))
-//   const maraScanOperationsContract = await contracts.marascanOperationsContract()
+const maraScanOperationsIndex = async () => {
+  const contracts = new Contracts(Env.get('NETWORK'))
+  const maraScanOperationsContract = await contracts.marascanOperationsContract()
 
-//   await maraScanOperationsContract.on('', async (withrawal) => {
-//     console.log(withrawal)
-//   })
-// }
+  await maraScanOperationsContract.on('UserWithdrawal', async (beneficiary, amount) => {
+    console.log(beneficiary, amount)
+
+    const beneficiaryRecord = await Beneficiary.findByOrFail('ethereumAccountAddress', beneficiary)
+    await (
+      await BeneficiaryWithdrawal.findByOrFail('beneficiaryId', beneficiaryRecord.id)
+    ).merge({
+      usdAmount: Number(utils.formatUnits(amount, 6)),
+      status: 'completed',
+    })
+  })
+}
 
 marascanContractIndex()
-// maraScanOperationsIndex()
+maraScanOperationsIndex()

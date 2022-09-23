@@ -7,6 +7,7 @@ import Provider from 'App/Indexer/connection/provider'
 import CoinMarketCapService from './CoinMarketCapSevice'
 import { decryptText } from 'App/Utils'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
+import BeneficiaryWithdrawal from 'App/Models/BeneficiaryWithdrawal'
 
 class BeneficiaryEthereumAccountService extends Provider {
   private web3: Web3
@@ -118,6 +119,8 @@ class BeneficiaryEthereumAccountService extends Provider {
       r,
       s
     )
+
+    await BeneficiaryWithdrawal.create({ beneficiaryId: beneficiaryId })
   }
 }
 
