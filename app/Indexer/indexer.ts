@@ -77,7 +77,7 @@ const maraScanOperationsIndex = async () => {
     const smsData = {
       to: [beneficiaryRecord.mobile],
       from: 'MARASCAN',
-      message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)} To Your M-Pesa`,
+      message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)} KES To Your M-Pesa`,
     }
 
     await SMSService.sendSMS(smsData)
