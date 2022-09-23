@@ -5,6 +5,8 @@ import Env from '@ioc:Adonis/Core/Env'
 import { DisbursedEventType, DonationEventType } from './types/types'
 import BeneficiaryWithdrawal from 'App/Models/BeneficiaryWithdrawal'
 import Beneficiary from 'App/Models/Beneficiary'
+import SMSService from 'App/Services/SMSService'
+import CoinMarketCapService from 'App/Services/CoinMarketCapSevice'
 // import CircleService from 'App/Services/CircleService'
 
 // const test = async () => {
@@ -66,6 +68,19 @@ const maraScanOperationsIndex = async () => {
       usdAmount: Number(utils.formatUnits(amount, 6)),
       status: 'completed',
     })
+
+    const kesAmount = await CoinMarketCapService.getKESValue(
+      'USDC',
+      Number(utils.formatUnits(amount, 6))
+    )
+
+    const smsData = {
+      to: [beneficiaryRecord.mobile],
+      from: 'MARASCAN',
+      message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)}`,
+    }
+
+    await SMSService.sendSMS(smsData)
   })
 }
 
