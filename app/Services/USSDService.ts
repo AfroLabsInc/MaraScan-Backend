@@ -242,7 +242,7 @@ export default class USSDService {
         //Create an Ethereum Account for the user
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
-        const conservancy = Conservancy.find(Number(textArray[7]))
+        const conservancy = await Conservancy.findOrFail(Number(textArray[7]))
         console.log(conservancy)
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
@@ -254,6 +254,8 @@ export default class USSDService {
           country: textArray[3],
           region: textArray[4],
           address: textArray[5],
+          conservancyId: conservancy.id,
+          categoryId: Number(textArray[8]),
         })
         ussdUser.beneficiaryId = beneficiary.id
         await ussdUser.save()
