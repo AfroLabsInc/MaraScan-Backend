@@ -19,6 +19,7 @@ export default class BeneficiaryCategoriesController {
     const categories = await BeneficiaryCategory.query()
       .where('conservancyId', conservancyId)
       .preload('coverImage')
+      .preload('beneficiaries')
 
     return {
       status: 200,
