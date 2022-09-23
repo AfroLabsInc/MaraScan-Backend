@@ -5,12 +5,11 @@ import Env from '@ioc:Adonis/Core/Env'
 import { DisbursedEventType, DonationEventType } from './types/types'
 import BeneficiaryWithdrawal from 'App/Models/BeneficiaryWithdrawal'
 import Beneficiary from 'App/Models/Beneficiary'
-import SMSService from 'App/Services/SMSService'
 import CoinMarketCapService from 'App/Services/CoinMarketCapSevice'
-// import CircleService from 'App/Services/CircleService'
+import SMSService from 'App/Services/SMSService'
 
 // const test = async () => {
-//   console.log(await CircleService.getMasterWalletId())
+//   // console.log(await CircleService.getMasterWalletId())
 // }
 // test()
 const marascanContractIndex = async () => {
@@ -74,10 +73,9 @@ const maraScanOperationsIndex = async () => {
     )
 
     const smsData = {
-      username: Env.get('AFRICASTALKING_USERNAME'),
       to: [beneficiaryRecord.mobile],
       from: 'MARASCAN',
-      message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)}`,
+      message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)} To Your M-Pesa`,
     }
 
     await SMSService.sendSMS(smsData)

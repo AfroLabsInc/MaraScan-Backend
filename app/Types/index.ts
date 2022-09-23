@@ -6,7 +6,6 @@ export type USSDDataType = {
 }
 
 export type SMSDataType = {
-  username: string
   to: string[]
   from: string
   message: string
