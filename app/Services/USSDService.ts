@@ -221,7 +221,7 @@ export default class USSDService {
         2. ${content[ussdUser.language].cancelReg}
       `
     } else if (level === 10) {
-      if (textArray[10] === '1') {
+      if (textArray[9] === '1') {
         //Create an Ethereum Account for the user
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
@@ -253,7 +253,7 @@ export default class USSDService {
         })
 
         response = `END ${content[ussdUser.language].registerDone}`
-      } else if (textArray[10] === '2') {
+      } else if (textArray[9] === '2') {
         response = `END ${content[ussdUser.language].registerCancel}
         `
       }
