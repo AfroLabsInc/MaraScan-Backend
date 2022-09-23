@@ -7,6 +7,7 @@ import UssdUser from 'App/Models/UssdUser'
 import BeneficiaryEthereumAccountService from './BeneficiaryEthereumAccountService'
 import CoinMarketCapService from './CoinMarketCapSevice'
 import BeneficiaryLand from 'App/Models/BeneficiaryLand'
+import Conservancy from 'App/Models/Conservancy'
 
 const content = {
   english: {
@@ -23,6 +24,7 @@ const content = {
     region: 'Enter your region',
     address: 'Enter your address',
     kId: 'Enter your Kenya ID Number',
+    selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Enter Your Title Deed Number',
     formComplete: 'Thanks for Completing the form, reply with',
     confirmReg: 'Confirm Registration',
@@ -36,6 +38,9 @@ const content = {
     transferMoney: 'Transfer money',
     withdrawToMpesa: 'Withdraw to M-Pesa',
     amountToWithdraw: 'Enter Amount To Withdraw',
+    withrawMessage1: 'Withdrawal of',
+    withrawMessage2: 'to',
+    withrawMessage3: 'is Processing',
     viewHistory: 'View Donation History',
     accBalRes: 'Your Account Balance is',
     setPasswordMenu: 'Setup a password',
@@ -59,6 +64,7 @@ const content = {
     region: 'Enter your region',
     address: 'Enter your address',
     kId: 'Enter your Kenya ID Number',
+    selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Enter Your Title Deed Number',
     formComplete: 'Thanks for Completing the form, reply with',
     confirmReg: 'Confirm Registration',
@@ -72,6 +78,9 @@ const content = {
     transferMoney: 'Transfer money',
     withdrawToMpesa: 'Withdraw to M-Pesa',
     amountToWithdraw: 'Enter Amount To Withdraw',
+    withrawMessage1: 'Withdrawal of',
+    withrawMessage2: 'to',
+    withrawMessage3: 'is Processing',
     viewHistory: 'View Donation History',
     accBalRes: 'Your Account Balance is',
     setPasswordMenu: 'Setup a password',
@@ -95,6 +104,7 @@ const content = {
     region: 'Ingiza eneo lako',
     address: 'Weka anwani yako',
     kId: 'Weka Nambari yako ya Kitambulisho cha Kenya',
+    selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Weka Nambari Yako ya Hatimiliki',
     formComplete: 'Asante kwa Kujaza fomu, jibu na',
     registerDone: 'Hongera, maelezo yako yamewasilishwa na yatakaguliwa na Wasimamizi wetu',
@@ -107,6 +117,9 @@ const content = {
     transferMoney: 'Kuhamisha fedha',
     withdrawToMpesa: 'Toa pesa kwa M-Pesa',
     amountToWithdraw: 'Weka Kiasi cha Kutoa',
+    withrawMessage1: 'Uondoaji wa',
+    withrawMessage2: 'hadi',
+    withrawMessage3: 'unachakatwa',
     viewHistory: 'Tazama Historia ya Uchangiaji',
     accBalRes: 'Salio la Akaunti yako ni',
     setPasswordMenu: 'Sanidi nenosiri',
@@ -196,18 +209,24 @@ export default class USSDService {
     } else if (level === 6) {
       response = `CON ${content[ussdUser.language].kId}`
     } else if (level === 7) {
-      response = `CON ${content[ussdUser.language].titleDeedId}`
+      const conservancies = await Conservancy.query()
+      response = `CON ${content[ussdUser.language].selectConservancy}
+        ${conservancies.map((conservancy) => `${conservancy.id}. ${conservancy.name} \n`)}
+      `
     } else if (level === 8) {
+      response = `CON ${content[ussdUser.language].titleDeedId}`
+    } else if (level === 9) {
       response = `CON ${content[ussdUser.language].formComplete}
         1. ${content[ussdUser.language].confirmReg}
         2. ${content[ussdUser.language].cancelReg}
       `
-    } else if (level === 9) {
-      if (textArray[8] === '1') {
+    } else if (level === 10) {
+      if (textArray[10] === '1') {
         //Create an Ethereum Account for the user
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
-        console.log(account.address)
+        const conservancy = Conservancy.find(Number(textArray[7]))
+        console.log(conservancy)
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
           ethereumAccountAddress: account.address,
@@ -230,11 +249,11 @@ export default class USSDService {
 
         await BeneficiaryLand.create({
           beneficiaryId: beneficiary.id,
-          titleDeedIdentification: textArray[7],
+          titleDeedIdentification: textArray[8],
         })
 
         response = `END ${content[ussdUser.language].registerDone}`
-      } else if (textArray[8] === '2') {
+      } else if (textArray[10] === '2') {
         response = `END ${content[ussdUser.language].registerCancel}
         `
       }
@@ -286,7 +305,9 @@ export default class USSDService {
         } else if (textArray[1] === '3') {
           // TODO: Handle Withdrawal Logic
           BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
-          response = `END Withdrawal of ${textArray[3]} to ${data.phoneNumber} is proccessing`
+          response = `END ${content[ussdUser.language].withrawMessage1} ${textArray[3]} ${
+            content[ussdUser.language].withrawMessage2
+          } ${data.phoneNumber} ${content[ussdUser.language].withrawMessage3}`
         }
       }
     } else {

@@ -13,6 +13,8 @@ export default class extends BaseSeeder {
         name: 'Mara Siana Conservancy',
         description: 'The Most Beautiful Conservancy of the Masai People',
         registrationIdentification: 'MS2022',
+        ethereumAccountAddress: '',
+        ethereumAccountPrivateKey: '',
       }
     )
     await BeneficiaryCategory.updateOrCreateMany('title', [
