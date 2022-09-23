@@ -243,7 +243,6 @@ export default class USSDService {
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
         const conservancy = await Conservancy.findOrFail(Number(textArray[7]))
-        console.log(conservancy)
         // create a record for the beneficiary
         const beneficiary = await Beneficiary.create({
           ethereumAccountAddress: account.address,
@@ -287,7 +286,6 @@ export default class USSDService {
     const beneficiary = await Beneficiary.findByOrFail('id', ussdUser.beneficiaryId)
     let response
     if (beneficiary.password) {
-      console.log(true)
       if (level === 1) {
         response = `CON ${content[ussdUser.language].manageAccMenu}
         1. ${content[ussdUser.language].accBal}

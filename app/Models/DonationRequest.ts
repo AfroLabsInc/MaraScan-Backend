@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Donor from './Donor'
+import Conservancy from './Conservancy'
 
 export default class DonationRequest extends BaseModel {
   @column({ isPrimary: true })
@@ -9,7 +10,10 @@ export default class DonationRequest extends BaseModel {
   @column()
   public donorId: number
 
-  @column({ prepare: (value) => (value ? JSON.stringify(value) : value) })
+  @column()
+  public conservancyId: number
+
+  @column()
   public categoryIds: number[]
 
   @column()
@@ -32,6 +36,11 @@ export default class DonationRequest extends BaseModel {
 
   @column()
   public paymentId: string
+
+  @belongsTo(() => Conservancy, {
+    foreignKey: 'conservancyId',
+  })
+  public conservancy: BelongsTo<typeof Conservancy>
 
   @belongsTo(() => Donor, {
     foreignKey: 'donorId',

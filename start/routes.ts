@@ -27,6 +27,7 @@ import {
   beneficiaryRoutes,
   adminRoutes,
   circleRoutes,
+  openRoutes,
 } from './routes/index'
 
 Route.group(() => {
@@ -37,4 +38,5 @@ Route.group(() => {
   mpesaRoutes()
   donorRoutes()
   beneficiaryRoutes()
+  openRoutes()
 }).prefix('api/v1')

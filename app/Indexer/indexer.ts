@@ -3,6 +3,12 @@ import { utils, BigNumber } from 'ethers'
 import Contracts from './contracts'
 import Env from '@ioc:Adonis/Core/Env'
 import { DisbursedEventType, DonationEventType } from './types/types'
+// import CircleService from 'App/Services/CircleService'
+
+// const test = async () => {
+//   console.log(await CircleService.getMasterWalletId())
+// }
+// test()
 
 const marascanContractIndex = async () => {
   const contracts = new Contracts(Env.get('NETWORK'))

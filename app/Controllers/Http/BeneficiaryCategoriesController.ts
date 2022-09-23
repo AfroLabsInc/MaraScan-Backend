@@ -14,8 +14,11 @@ export default class BeneficiaryCategoriesController {
     return ImageService.uploadImage({ tmpPath, folder, fileName })
   }
 
-  public async index({}: HttpContextContract) {
-    const categories = await BeneficiaryCategory.query().preload('coverImage')
+  public async index({ params }: HttpContextContract) {
+    const conservancyId: number = params.conservancy_id
+    const categories = await BeneficiaryCategory.query()
+      .where('conservancyId', conservancyId)
+      .preload('coverImage')
 
     return {
       status: 200,
@@ -24,7 +27,8 @@ export default class BeneficiaryCategoriesController {
     }
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, params }: HttpContextContract) {
+    const conservancyId = params.conservancy_id
     const { title, description, coverImage } = await BeneficiaryCategoryValidator.store({
       ...request.all(),
       coverImage: request.file('coverImage'),
@@ -36,9 +40,14 @@ export default class BeneficiaryCategoriesController {
       const image = await this.saveImage(coverImage, title)
       const coverImageId = await (await Image.create(image)).id
 
-      category = await BeneficiaryCategory.create({ title, description, coverImageId })
+      category = await BeneficiaryCategory.create({
+        title,
+        description,
+        coverImageId,
+        conservancyId,
+      })
     } else {
-      category = await BeneficiaryCategory.create({ title, description })
+      category = await BeneficiaryCategory.create({ title, description, conservancyId })
     }
 
     return {
