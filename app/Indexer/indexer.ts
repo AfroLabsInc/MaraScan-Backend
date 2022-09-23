@@ -62,10 +62,12 @@ const maraScanOperationsIndex = async () => {
     const beneficiaryRecord = await Beneficiary.findByOrFail('ethereumAccountAddress', beneficiary)
     await (
       await BeneficiaryWithdrawal.findByOrFail('beneficiaryId', beneficiaryRecord.id)
-    ).merge({
-      usdAmount: Number(utils.formatUnits(amount, 6)),
-      status: 'completed',
-    })
+    )
+      .merge({
+        usdAmount: Number(utils.formatUnits(amount, 6)),
+        status: 'completed',
+      })
+      .save()
 
     const kesAmount = await CoinMarketCapService.getKESValue(
       'USDC',
