@@ -8,6 +8,7 @@ import CoinMarketCapService from './CoinMarketCapSevice'
 import { decryptText } from 'App/Utils'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import BeneficiaryWithdrawal from 'App/Models/BeneficiaryWithdrawal'
+import { errorHandler } from 'App/Utils'
 
 class BeneficiaryEthereumAccountService extends Provider {
   private web3: Web3
@@ -44,83 +45,87 @@ class BeneficiaryEthereumAccountService extends Provider {
     const beneficiary = await Beneficiary.findOrFail(beneficiaryId)
     const privateKey: string = await decryptText(beneficiary.ethereumAccountPrivateKey)
 
-    // implementing KES to USDC price conversion
-    const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
+    try {
+      // implementing KES to USDC price conversion
+      const amountUSDC = await CoinMarketCapService.getUSDValue('KES', amount)
 
-    const formatedAmount = Number(Math.pow(10, 6) * amountUSDC)
-      .toString()
-      .split('.')[0]
+      const formatedAmount = Number(Math.pow(10, 6) * amountUSDC)
+        .toString()
+        .split('.')[0]
 
-    // implementing EIP3009
-    const contracts = new Contracts(Env.get('NETWORK'))
-    const usdcContract = await contracts.usdcContract()
+      // implementing EIP3009
+      const contracts = new Contracts(Env.get('NETWORK'))
+      const usdcContract = await contracts.usdcContract()
 
-    const maraScanOperationsContract = await contracts.marascanOperationsContract()
-    const nonce = Web3.utils.randomHex(32)
-    const validBefore = Math.floor(Date.now() / 1000) + 3600
+      const maraScanOperationsContract = await contracts.marascanOperationsContract()
+      const nonce = Web3.utils.randomHex(32)
+      const validBefore = Math.floor(Date.now() / 1000) + 3600
 
-    const dataType = {
-      types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-          { name: 'verifyingContract', type: 'address' },
-        ],
-        TransferWithAuthorization: [
-          { name: 'from', type: 'address' },
-          { name: 'to', type: 'address' },
-          { name: 'value', type: 'uint256' },
-          { name: 'validAfter', type: 'uint256' },
-          { name: 'validBefore', type: 'uint256' },
-          { name: 'nonce', type: 'bytes32' },
-        ],
-      },
-      domain: {
-        name: 'USD Coin',
-        version: '2',
-        chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
-        verifyingContract: usdcContract.address,
-      },
-      primaryType: 'TransferWithAuthorization',
-      message: {
-        from: beneficiary.ethereumAccountAddress,
-        to: maraScanOperationsContract.address,
-        value: Number(formatedAmount), // amount
-        validAfter: 0,
-        validBefore: validBefore, // Valid for an hour
-        nonce: nonce,
-      },
-    }
-
-    // create signature
-    const signature = signTypedData({
-      privateKey: Buffer.from(privateKey.substring(2), 'hex'),
-      data: {
-        types: dataType.types,
+      const dataType = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          TransferWithAuthorization: [
+            { name: 'from', type: 'address' },
+            { name: 'to', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'validAfter', type: 'uint256' },
+            { name: 'validBefore', type: 'uint256' },
+            { name: 'nonce', type: 'bytes32' },
+          ],
+        },
+        domain: {
+          name: 'USD Coin',
+          version: '2',
+          chainId: this.getChainId(Env.get('NETWORK')), // chainId of network
+          verifyingContract: usdcContract.address,
+        },
         primaryType: 'TransferWithAuthorization',
-        domain: dataType.domain,
-        message: dataType.message,
-      },
-      version: SignTypedDataVersion.V4,
-    })
-    const v = '0x' + signature.slice(130, 132)
-    const r = signature.slice(0, 66)
-    const s = '0x' + signature.slice(66, 130)
+        message: {
+          from: beneficiary.ethereumAccountAddress,
+          to: maraScanOperationsContract.address,
+          value: Number(formatedAmount), // amount
+          validAfter: 0,
+          validBefore: validBefore, // Valid for an hour
+          nonce: nonce,
+        },
+      }
 
-    await maraScanOperationsContract._gaslessTransfer(
-      dataType.message.from,
-      dataType.message.to,
-      dataType.message.value,
-      dataType.message.validAfter,
-      dataType.message.validBefore,
-      dataType.message.nonce,
-      v,
-      r,
-      s
-    )
+      // create signature
+      const signature = signTypedData({
+        privateKey: Buffer.from(privateKey.substring(2), 'hex'),
+        data: {
+          types: dataType.types,
+          primaryType: 'TransferWithAuthorization',
+          domain: dataType.domain,
+          message: dataType.message,
+        },
+        version: SignTypedDataVersion.V4,
+      })
+      const v = '0x' + signature.slice(130, 132)
+      const r = signature.slice(0, 66)
+      const s = '0x' + signature.slice(66, 130)
 
-    await BeneficiaryWithdrawal.create({ beneficiaryId: beneficiaryId })
+      await maraScanOperationsContract._gaslessTransfer(
+        dataType.message.from,
+        dataType.message.to,
+        dataType.message.value,
+        dataType.message.validAfter,
+        dataType.message.validBefore,
+        dataType.message.nonce,
+        v,
+        r,
+        s
+      )
+
+      await BeneficiaryWithdrawal.create({ beneficiaryId: beneficiaryId })
+    } catch (error) {
+      errorHandler(error)
+    }
   }
 }
 
