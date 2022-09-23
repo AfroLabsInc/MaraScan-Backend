@@ -47,6 +47,7 @@ export default Env.rules({
   CIRCLE_API_BASE_URL: Env.schema.string(),
   CIRCLE_API_TOKEN: Env.schema.string(),
 
+  AFRICASTALKING_BASE_URL: Env.schema.string(),
   AFRICASTALKING_APIKEY: Env.schema.string(),
   AFRICASTALKING_USERNAME: Env.schema.string(),
 

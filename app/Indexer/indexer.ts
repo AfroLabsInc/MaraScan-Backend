@@ -13,7 +13,6 @@ import CoinMarketCapService from 'App/Services/CoinMarketCapSevice'
 //   console.log(await CircleService.getMasterWalletId())
 // }
 // test()
-
 const marascanContractIndex = async () => {
   const contracts = new Contracts(Env.get('NETWORK'))
   const marascanContract = await contracts.marascanContract()
@@ -75,6 +74,7 @@ const maraScanOperationsIndex = async () => {
     )
 
     const smsData = {
+      username: Env.get('AFRICASTALKING_USERNAME'),
       to: [beneficiaryRecord.mobile],
       from: 'MARASCAN',
       message: `You Have Successfully Withdrawn ${kesAmount.toFixed(2)}`,
