@@ -8,6 +8,7 @@ import BeneficiaryEthereumAccountService from './BeneficiaryEthereumAccountServi
 import CoinMarketCapService from './CoinMarketCapSevice'
 import BeneficiaryLand from 'App/Models/BeneficiaryLand'
 import Conservancy from 'App/Models/Conservancy'
+import BeneficiaryCategory from 'App/Models/BeneficiaryCategory'
 
 const content = {
   english: {
@@ -26,6 +27,7 @@ const content = {
     kId: 'Enter your Kenya ID Number',
     selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Enter Your Title Deed Number',
+    skill: 'Enter your Skill',
     formComplete: 'Thanks for Completing the form, reply with',
     confirmReg: 'Confirm Registration',
     cancelReg: 'Cancel Registration.',
@@ -66,6 +68,7 @@ const content = {
     kId: 'Enter your Kenya ID Number',
     selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Enter Your Title Deed Number',
+    skill: 'Enter your Skill',
     formComplete: 'Thanks for Completing the form, reply with',
     confirmReg: 'Confirm Registration',
     cancelReg: 'Cancel Registration.',
@@ -106,6 +109,7 @@ const content = {
     kId: 'Weka Nambari yako ya Kitambulisho cha Kenya',
     selectConservancy: 'Select Your Conservancy, Reply with:',
     titleDeedId: 'Weka Nambari Yako ya Hatimiliki',
+    skill: 'Enter your Skill',
     formComplete: 'Asante kwa Kujaza fomu, jibu na',
     registerDone: 'Hongera, maelezo yako yamewasilishwa na yatakaguliwa na Wasimamizi wetu',
     confirmReg: 'Thibitisha Usajili.',
@@ -168,7 +172,7 @@ export default class USSDService {
       { mobile: data.phoneNumber, lastSessionId: data.sessionId }
     )
     const beneficiary = await Beneficiary.findBy('mobile', data.phoneNumber)
-    const level = extractText(data.text).length
+    let level = extractText(data.text).length
     const textArray = extractText(data.text)
 
     let response
@@ -214,14 +218,27 @@ export default class USSDService {
         ${conservancies.map((conservancy) => `${conservancy.id}. ${conservancy.name} \n`)}
       `
     } else if (level === 8) {
-      response = `CON ${content[ussdUser.language].titleDeedId}`
+      const categories = await BeneficiaryCategory.query().where(
+        'conservancyId',
+        Number(textArray[7])
+      )
+      response = `CON ${content[ussdUser.language].selectConservancy}
+        ${categories.map((category) => `${category.id}. ${category.title} \n`)}
+      `
     } else if (level === 9) {
+      const category = await BeneficiaryCategory.findOrFail(Number(textArray[8]))
+      if (category.title === 'Land Owners') {
+        response = `CON ${content[ussdUser.language].titleDeedId}`
+      } else if (category.title === 'Artisan Women') {
+        response = `CON ${content[ussdUser.language].skill}`
+      }
+    } else if (level === 10) {
       response = `CON ${content[ussdUser.language].formComplete}
         1. ${content[ussdUser.language].confirmReg}
         2. ${content[ussdUser.language].cancelReg}
       `
-    } else if (level === 10) {
-      if (textArray[9] === '1') {
+    } else if (level === 11) {
+      if (textArray[10] === '1') {
         //Create an Ethereum Account for the user
         const account = await BeneficiaryEthereumAccountService.createBeneficiaryAccount()
 
@@ -247,13 +264,16 @@ export default class USSDService {
           beneficiaryId: beneficiary.id,
         })
 
-        await BeneficiaryLand.create({
-          beneficiaryId: beneficiary.id,
-          titleDeedIdentification: textArray[8],
-        })
+        const category = await BeneficiaryCategory.findOrFail(Number(textArray[8]))
+        if (category.title === 'Land Owners') {
+          await BeneficiaryLand.create({
+            beneficiaryId: beneficiary.id,
+            titleDeedIdentification: textArray[9],
+          })
+        }
 
         response = `END ${content[ussdUser.language].registerDone}`
-      } else if (textArray[9] === '2') {
+      } else if (textArray[10] === '2') {
         response = `END ${content[ussdUser.language].registerCancel}
         `
       }
