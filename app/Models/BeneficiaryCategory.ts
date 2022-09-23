@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Beneficiary from './Beneficiary'
 import Image from './Image'
+import Conservancy from './Conservancy'
 
 export default class BeneficiaryCategory extends BaseModel {
   @column({ isPrimary: true })
@@ -16,6 +17,9 @@ export default class BeneficiaryCategory extends BaseModel {
   @column()
   public coverImageId: number
 
+  @column()
+  public conservancyId: number
+
   @hasMany(() => Beneficiary, {
     foreignKey: 'categoryId',
   })
@@ -25,6 +29,11 @@ export default class BeneficiaryCategory extends BaseModel {
     foreignKey: 'coverImageId',
   })
   public coverImage: BelongsTo<typeof Image>
+
+  @belongsTo(() => Conservancy, {
+    foreignKey: 'conservancyId',
+  })
+  public conservancy: BelongsTo<typeof Conservancy>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -44,4 +44,14 @@ const marascanContractIndex = async () => {
   })
 }
 
+const maraScanOperationsIndex = async () => {
+  const contracts = new Contracts(Env.get('NETWORK'))
+  const maraScanOperationsContract = await contracts.marascanOperationsContract()
+
+  await maraScanOperationsContract.on('', async (withrawal) => {
+    console.log(withrawal)
+  })
+}
+
 marascanContractIndex()
+maraScanOperationsIndex()

@@ -7,6 +7,7 @@
 
 import Admin from 'App/Models/Admin'
 import Beneficiary from 'App/Models/Beneficiary'
+import Conservancy from 'App/Models/Conservancy'
 import Donor from 'App/Models/Donor'
 
 declare module '@ioc:Adonis/Addons/Auth' {
@@ -42,6 +43,10 @@ declare module '@ioc:Adonis/Addons/Auth' {
     donor: {
       implementation: LucidProviderContract<typeof Donor>
       config: LucidProviderConfig<typeof Donor>
+    }
+    conservancy: {
+      implementation: LucidProviderContract<typeof Conservancy>
+      config: LucidProviderConfig<typeof Conservancy>
     }
     beneficiary: {
       implementation: LucidProviderContract<typeof Beneficiary>
@@ -83,6 +88,11 @@ declare module '@ioc:Adonis/Addons/Auth' {
       implementation: OATGuardContract<'donor', 'donorApi'>
       config: OATGuardConfig<'donor'>
       client: OATClientContract<'donor'>
+    }
+    conservancyApi: {
+      implementation: OATGuardContract<'conservancy', 'conservancyApi'>
+      config: OATGuardConfig<'conservancy'>
+      client: OATClientContract<'conservancy'>
     }
     beneficiaryApi: {
       implementation: OATGuardContract<'beneficiary', 'beneficiaryApi'>

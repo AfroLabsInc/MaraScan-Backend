@@ -14,10 +14,14 @@ import UssdUser from './UssdUser'
 import { encryptText } from 'App/Utils'
 import Hash from '@ioc:Adonis/Core/Hash'
 import BeneficiaryLand from './BeneficiaryLand'
+import Conservancy from './Conservancy'
 
 export default class Beneficiary extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public conservancyId: number
 
   @column()
   public categoryId: number
@@ -51,6 +55,11 @@ export default class Beneficiary extends BaseModel {
 
   @column()
   public password: string
+
+  @belongsTo(() => Conservancy, {
+    foreignKey: 'conservancyId',
+  })
+  public conservancy: BelongsTo<typeof Conservancy>
 
   @belongsTo(() => BeneficiaryCategory, {
     foreignKey: 'categoryId',

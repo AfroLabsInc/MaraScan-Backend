@@ -45,6 +45,42 @@ const content = {
     enterPassword: 'Enter Your Password',
     incorrectPassword: 'Incorret Password, Please Try Again',
   },
+  masai: {
+    welcomeMsg: 'Welcome to MaraScan. Reply with',
+    welcomeBack: 'Welcome back',
+    register: 'Register',
+    manageAcc: 'Manage Account',
+    changeLang: 'Change Language',
+    support: 'Help and Support',
+    selectLang: 'Select a Language, reply with',
+    firstName: 'Enter your first name',
+    lastName: 'Enter your last name (surname)',
+    country: 'Enter your country',
+    region: 'Enter your region',
+    address: 'Enter your address',
+    kId: 'Enter your Kenya ID Number',
+    titleDeedId: 'Enter Your Title Deed Number',
+    formComplete: 'Thanks for Completing the form, reply with',
+    confirmReg: 'Confirm Registration',
+    cancelReg: 'Cancel Registration.',
+    registerDone:
+      'Congratulations, your details have been submitted and will be reviewd by our system for verification',
+    registerCancel:
+      "We're sorry that you couldn't proceed with the registration. We hope to have you again soon.",
+    manageAccMenu: 'What would you like to check?',
+    accBal: 'Account balance',
+    transferMoney: 'Transfer money',
+    withdrawToMpesa: 'Withdraw to M-Pesa',
+    amountToWithdraw: 'Enter Amount To Withdraw',
+    viewHistory: 'View Donation History',
+    accBalRes: 'Your Account Balance is',
+    setPasswordMenu: 'Setup a password',
+    confirmPasswordMenu: 'Confirm The Password',
+    passwordSetSuccessful: 'Password Set Successfully',
+    passwordSetFailed: 'Password Set Failed, Unmatched Password and confirmation set',
+    enterPassword: 'Enter Your Password',
+    incorrectPassword: 'Incorret Password, Please Try Again',
+  },
   swahili: {
     welcomeMsg: 'Karibu MaraScan. Jibu na',
     welcomeBack: 'Karibu tena',
@@ -250,7 +286,7 @@ export default class USSDService {
         } else if (textArray[1] === '3') {
           // TODO: Handle Withdrawal Logic
           BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
-          response = `END ${textArray[3]} withdrawn to ${data.phoneNumber}`
+          response = `END Withdrawal of ${textArray[3]} to ${data.phoneNumber} is proccessing`
         }
       }
     } else {
@@ -277,7 +313,8 @@ export default class USSDService {
     if (level === 1) {
       response = `CON  ${content[ussdUser.language].selectLang}
         1. English
-        2. Swahili
+        2. Masai
+        3. Swahili
       `
     } else if (level === 2) {
       if (textArray[1] === '1') {
@@ -286,6 +323,11 @@ export default class USSDService {
 
         response = `END You have successfully Changed Your Language`
       } else if (textArray[1] === '2') {
+        ussdUser.language = 'masai'
+        await ussdUser.save()
+
+        response = `END Umefanikiwa Kubadilisha Lugha Yako`
+      } else if (textArray[1] === '3') {
         ussdUser.language = 'swahili'
         await ussdUser.save()
 

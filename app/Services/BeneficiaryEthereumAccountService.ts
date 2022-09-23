@@ -106,7 +106,6 @@ class BeneficiaryEthereumAccountService extends Provider {
     const v = '0x' + signature.slice(130, 132)
     const r = signature.slice(0, 66)
     const s = '0x' + signature.slice(66, 130)
-    console.log(v, r, s)
 
     await maraScanOperationsContract._gaslessTransfer(
       dataType.message.from,
