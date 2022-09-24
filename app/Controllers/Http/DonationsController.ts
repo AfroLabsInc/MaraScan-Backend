@@ -8,6 +8,7 @@ export default class DonationsController {
       .where('paymentStatus', 'paid')
       .preload('donor')
       .preload('conservancy')
+      .orderBy('createdAt', 'desc')
 
     return {
       status: 200,

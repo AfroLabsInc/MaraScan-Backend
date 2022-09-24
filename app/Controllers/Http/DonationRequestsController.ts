@@ -6,7 +6,9 @@ export default class DonationRequestsController {
   public async index({ params }: HttpContextContract) {
     const donorId: number = params.donor_id
 
-    const donationRequests = await DonationRequest.query().where('donorId', donorId)
+    const donationRequests = await DonationRequest.query()
+      .where('donorId', donorId)
+      .orderBy('createdAt', 'desc')
 
     return {
       status: 200,
