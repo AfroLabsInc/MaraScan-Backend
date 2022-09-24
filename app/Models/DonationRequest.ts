@@ -3,10 +3,6 @@ import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Donor from './Donor'
 import Conservancy from './Conservancy'
 
-type AmountPerBeneficiaryObj = {
-  address: string
-  amount: number
-}
 export default class DonationRequest extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -17,8 +13,8 @@ export default class DonationRequest extends BaseModel {
   @column()
   public conservancyId: number
 
-  @column()
-  public categoryIds: number[]
+  @column({ prepare: (value) => (value ? JSON.stringify(value) : value) })
+  public categoryIds: object
 
   @column()
   public paymentMethod: string
@@ -42,7 +38,7 @@ export default class DonationRequest extends BaseModel {
   public paymentId: string
 
   @column({ prepare: (value) => (value ? JSON.stringify(value) : value) })
-  public amountPerBeneficiary: AmountPerBeneficiaryObj[]
+  public amountPerBeneficiary: object[]
 
   @belongsTo(() => Conservancy, {
     foreignKey: 'conservancyId',

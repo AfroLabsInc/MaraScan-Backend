@@ -21,11 +21,15 @@ export default class DonationRequestsController {
     const payload = await DonationRequestValidator.store({ ...request.all() })
 
     const donationRequest = await DonationRequest.create({ ...payload, donorId })
+    const donationRequestRec = await DonationRequest.query()
+      .where('id', donationRequest.id)
+      .preload('donor')
+      .preload('conservancy')
 
     return {
       status: 201,
       message: 'Donation Request Created Successfully',
-      data: donationRequest,
+      data: donationRequestRec,
     }
   }
 
@@ -34,6 +38,8 @@ export default class DonationRequestsController {
 
     const donationRequest = await DonationRequest.query()
       .where('id', donoationRequestId)
+      .preload('donor')
+      .preload('conservancy')
       .firstOrFail()
 
     return {

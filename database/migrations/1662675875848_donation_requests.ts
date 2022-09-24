@@ -15,7 +15,7 @@ export default class extends BaseSchema {
 
       table.json('amount')
 
-      table.json('amountPerBeneficiary')
+      table.json('amountPerBeneficiary').defaultTo([])
 
       table.text('note')
 

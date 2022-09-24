@@ -39,17 +39,17 @@ class MarascanService {
     for (const amountPerBeneficiary of donationRequest.amountPerBeneficiary) {
       const beneficiary = await Beneficiary.findByOrFail(
         'ethereumAccountAddress',
-        amountPerBeneficiary.address
+        amountPerBeneficiary['address']
       )
 
       const kesAmount = await CoinMarketCapService.getKESValue(
         'USDC',
-        Number(amountPerBeneficiary.amount)
+        Number(amountPerBeneficiary['amount'])
       )
 
       const smsData = {
         to: [beneficiary.mobile],
-        from: 'MARASCAN',
+        from: 'MachoMara',
         message: `You Have Received a Donation of ${kesAmount.toFixed(
           2
         )} KES, Dial *384*37083#	M-Pesa`,

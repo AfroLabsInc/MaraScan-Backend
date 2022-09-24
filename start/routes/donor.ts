@@ -10,6 +10,7 @@ export default () => {
       Route.resource('donors.profiles', 'DonorProfilesController').apiOnly()
       Route.post('donors/:donor_id/kyc', 'DonorKycsController.store')
 
+      Route.get('circle/public-key', 'CircleCardPaymentsController.getPublicKey')
       Route.post('donors/:donor_id/cards', 'CircleCardPaymentsController.addNewCard')
       Route.get('donors/:donor_id/cards', 'CircleCardPaymentsController.getDonorCards')
 
