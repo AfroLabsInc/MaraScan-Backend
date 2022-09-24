@@ -324,11 +324,30 @@ export default class USSDService {
         if (textArray[1] === '2') {
           // TODO: Handle Transfer Logic
         } else if (textArray[1] === '3') {
-          // TODO: Handle Withdrawal Logic
-          BeneficiaryEthereumAccountService.withdrawFromWallet(beneficiary.id, Number(textArray[3]))
-          response = `END ${content[ussdUser.language].withrawMessage1} ${textArray[3]} ${
-            content[ussdUser.language].withrawMessage2
-          } ${data.phoneNumber} ${content[ussdUser.language].withrawMessage3}`
+          // Get and Process Account Balance
+          const USDCBalance = await BeneficiaryEthereumAccountService.checkBeneficiaryBalance(
+            ussdUser.beneficiaryId
+          )
+          if (USDCBalance !== 0) {
+            const balance = await CoinMarketCapService.getKESValue('USDC', USDCBalance)
+
+            if (balance > Number(textArray[3])) {
+              // TODO: Handle Withdrawal Logic
+              BeneficiaryEthereumAccountService.withdrawFromWallet(
+                beneficiary.id,
+                Number(textArray[3])
+              )
+              response = `END ${content[ussdUser.language].withrawMessage1} ${textArray[3]} ${
+                content[ussdUser.language].withrawMessage2
+              } ${data.phoneNumber} ${content[ussdUser.language].withrawMessage3}`
+            } else {
+              response = `END You Don't Have Enough Money Left in Your Balance to Withdraw ${Number(
+                textArray[3]
+              )}`
+            }
+          } else {
+            response = `You Have No Money In Your Account To Withdraw`
+          }
         }
       }
     } else {
