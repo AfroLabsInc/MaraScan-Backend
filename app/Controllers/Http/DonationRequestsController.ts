@@ -8,6 +8,7 @@ export default class DonationRequestsController {
 
     const donationRequests = await DonationRequest.query()
       .where('donorId', donorId)
+      .preload('conservancy')
       .orderBy('createdAt', 'desc')
 
     return {
