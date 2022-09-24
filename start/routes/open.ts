@@ -4,6 +4,6 @@ export default () => {
   Route.group(() => {
     Route.get('conservancies', 'ConservanciesController.index')
 
-    Route.get('conservancies/:conservancy_id/categories', 'BeneficiaryCategoriesController.index')
+    Route.resource('conservancies.categories', 'BeneficiaryCategoriesController').apiOnly()
   })
 }

@@ -10,3 +10,8 @@ export type SMSDataType = {
   from: string
   message: string
 }
+
+export type AmountPerBeneficiaryObj = {
+  address: string
+  amount: number
+}

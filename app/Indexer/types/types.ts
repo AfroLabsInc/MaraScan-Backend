@@ -20,12 +20,11 @@ export type DonationEventType = {
   amount: number
   donationRequestId: number
   currentUndisbursedBalance: number
+  beneficiaries: any[]
 }
 
 export type DisbursedEventType = {
   donorAddress: string
   donationRequestId: number
   amountDisbursed: number
-  beneficiaryAddress: string
-  amountForBeneficiary: number
 }

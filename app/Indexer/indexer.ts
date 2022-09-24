@@ -21,12 +21,13 @@ const marascanContractIndex = async () => {
   // Donation Event
   await marascanContract.on(
     'Donated',
-    async (donor, amount, donationRequestId, currentUndisbursedBalance) => {
+    async (donor, amount, donationRequestId, currentUndisbursedBalance, beneficiaries) => {
       const data: DonationEventType = {
         donor: donor,
         amount: Number(utils.formatUnits(amount, 6)),
         donationRequestId: BigNumber.from(donationRequestId).toNumber(),
         currentUndisbursedBalance: Number(utils.formatUnits(currentUndisbursedBalance, 6)),
+        beneficiaries: beneficiaries,
       }
 
       await MarascanService.donation(data)
@@ -42,8 +43,6 @@ const marascanContractIndex = async () => {
       donorAddress: dataArray[0],
       donationRequestId: Number(dataArray[1]),
       amountDisbursed: Number(dataArray[2]) / Math.pow(10, 6),
-      beneficiaryAddress: dataArray[3],
-      amountForBeneficiary: Number(dataArray[4] / Math.pow(10, 6)),
     }
 
     await MarascanService.disbursement(data)
