@@ -32,36 +32,40 @@ class MarascanService {
     console.log(data)
     console.log(donationRequest)
 
-    setTimeout(async () => {
-      for (const amountPerBeneficiary of donationRequest.amountPerBeneficiary) {
-        const beneficiary = await Beneficiary.findByOrFail(
-          'ethereumAccountAddress',
-          amountPerBeneficiary['address']
-        )
+    await donationRequest
+      .merge({
+        isDisbursed: true,
+        disbursedAmount: data.amountDisbursed,
+      })
+      .save()
 
-        const kesAmount = await CoinMarketCapService.getKESValue(
-          'USDC',
-          Number(amountPerBeneficiary['amount'])
-        )
+    const recursiveCall = async () => {
+      if (donationRequest.amountPerBeneficiary) {
+        for (const amountPerBeneficiary of donationRequest.amountPerBeneficiary) {
+          const beneficiary = await Beneficiary.findByOrFail(
+            'ethereumAccountAddress',
+            amountPerBeneficiary['address']
+          )
 
-        const smsData = {
-          to: [beneficiary.mobile],
-          from: 'MachoMara',
-          message: `You Have Received a Donation of ${kesAmount.toFixed(
-            2
-          )} KES, Dial *384*37083#	M-Pesa`,
+          const kesAmount = await CoinMarketCapService.getKESValue(
+            'USDC',
+            Number(amountPerBeneficiary['amount'])
+          )
+
+          const smsData = {
+            to: [beneficiary.mobile],
+            from: 'MachoMara',
+            message: `You Have Received a Donation of ${kesAmount.toFixed(
+              2
+            )} KES, Dial *384*37083#	M-Pesa`,
+          }
+
+          await SMSService.sendSMS(smsData)
         }
-
-        await SMSService.sendSMS(smsData)
+      } else {
+        recursiveCall()
       }
-
-      await donationRequest
-        .merge({
-          isDisbursed: true,
-          disbursedAmount: data.amountDisbursed,
-        })
-        .save()
-    }, 5000)
+    }
   }
 }
 
