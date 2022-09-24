@@ -5,5 +5,7 @@ export default () => {
     Route.get('conservancies', 'ConservanciesController.index')
 
     Route.resource('conservancies.categories', 'BeneficiaryCategoriesController').apiOnly()
+
+    Route.resource('donations', 'DonationsController').apiOnly()
   })
 }
