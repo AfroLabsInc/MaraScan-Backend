@@ -25,6 +25,7 @@ export default class DonationRequestsController {
       .where('id', donationRequest.id)
       .preload('donor')
       .preload('conservancy')
+      .firstOrFail()
 
     return {
       status: 201,
