@@ -37,6 +37,9 @@ export default class DonationRequest extends BaseModel {
   @column()
   public paymentId: string
 
+  @column({ prepare: (value) => (value ? JSON.stringify(value) : value) })
+  public amountPerBeneficiary: object
+
   @belongsTo(() => Conservancy, {
     foreignKey: 'conservancyId',
   })

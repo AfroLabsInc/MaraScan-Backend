@@ -15,6 +15,8 @@ export default class extends BaseSchema {
 
       table.json('amount')
 
+      table.json('amountPerBeneficiary')
+
       table.text('note')
 
       table.enum('paymentStatus', ['paid', 'pending', 'failed']).defaultTo('pending')

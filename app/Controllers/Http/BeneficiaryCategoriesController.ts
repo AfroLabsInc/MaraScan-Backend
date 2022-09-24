@@ -19,7 +19,9 @@ export default class BeneficiaryCategoriesController {
     const categories = await BeneficiaryCategory.query()
       .where('conservancyId', conservancyId)
       .preload('coverImage')
-      .preload('beneficiaries')
+      .preload('beneficiaries', (beneficiary) => {
+        beneficiary.preload('land')
+      })
 
     return {
       status: 200,
@@ -64,7 +66,9 @@ export default class BeneficiaryCategoriesController {
     const category = await BeneficiaryCategory.query()
       .where('id', categoryId)
       .preload('coverImage')
-      .preload('beneficiaries')
+      .preload('beneficiaries', (beneficiary) => {
+        beneficiary.preload('land')
+      })
       .firstOrFail()
 
     return {

@@ -52,7 +52,7 @@ const content = {
     enterPassword: 'Enter Your Password',
     incorrectPassword: 'Incorret Password, Please Try Again',
   },
-  masai: {
+  maa: {
     welcomeMsg: 'Welcome to MaraScan. Reply with',
     welcomeBack: 'Welcome back',
     register: 'Register',
@@ -354,7 +354,7 @@ export default class USSDService {
     if (level === 1) {
       response = `CON  ${content[ussdUser.language].selectLang}
         1. English
-        2. Masai
+        2. Maa
         3. Swahili
       `
     } else if (level === 2) {
@@ -364,7 +364,7 @@ export default class USSDService {
 
         response = `END You have successfully Changed Your Language`
       } else if (textArray[1] === '2') {
-        ussdUser.language = 'masai'
+        ussdUser.language = 'maa'
         await ussdUser.save()
 
         response = `END Umefanikiwa Kubadilisha Lugha Yako`
