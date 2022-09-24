@@ -32,13 +32,6 @@ class MarascanService {
     console.log(data)
     console.log(donationRequest)
 
-    await donationRequest
-      .merge({
-        isDisbursed: true,
-        disbursedAmount: data.amountDisbursed,
-      })
-      .save()
-
     for (const amountPerBeneficiary of donationRequest.amountPerBeneficiary) {
       const beneficiary = await Beneficiary.findByOrFail(
         'ethereumAccountAddress',
@@ -60,6 +53,13 @@ class MarascanService {
 
       await SMSService.sendSMS(smsData)
     }
+
+    await donationRequest
+      .merge({
+        isDisbursed: true,
+        disbursedAmount: data.amountDisbursed,
+      })
+      .save()
   }
 }
 
