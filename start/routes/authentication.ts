@@ -19,6 +19,11 @@ export default () => {
     }).prefix('donors')
 
     Route.group(() => {
+      Route.post('login', 'ConservancyAuthsController.login')
+      Route.post('logout', 'ConservancyAuthsController.logout')
+    }).prefix('conservancy')
+
+    Route.group(() => {
       Route.post('login', 'AdminAuthsController.login')
       Route.post('logout', 'AdminAuthsController.logout')
     }).prefix('admin')
