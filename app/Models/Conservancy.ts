@@ -53,7 +53,7 @@ export default class Conservancy extends BaseModel {
   public beneficiaries: HasMany<typeof Beneficiary>
 
   @hasMany(() => BeneficiaryCategory, {
-    foreignKey: 'beneficiaryCategoryId',
+    // foreignKey: 'beneficiaryCategoryId',
   })
   public categories: HasMany<typeof BeneficiaryCategory>
 

@@ -10,7 +10,7 @@ export default class ConservancyAuthsController {
       expiresIn: '2 days',
     })
 
-    const conservancy = Conservancy.query()
+    const conservancy = await Conservancy.query()
       .where('id', token.user.id)
       .preload('coverImage')
       .preload('categories', (category) => {

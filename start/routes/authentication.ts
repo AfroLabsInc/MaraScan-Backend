@@ -21,7 +21,7 @@ export default () => {
     Route.group(() => {
       Route.post('login', 'ConservancyAuthsController.login')
       Route.post('logout', 'ConservancyAuthsController.logout')
-    }).prefix('conservancy')
+    }).prefix('conservancies')
 
     Route.group(() => {
       Route.post('login', 'AdminAuthsController.login')
