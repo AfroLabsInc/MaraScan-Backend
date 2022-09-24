@@ -6,6 +6,7 @@ class DonationRequestValidator {
     return validator.validate({
       schema: schema.create({
         paymentMethod: schema.enum(['crypto', 'fiat']),
+        conservancyId: schema.number(),
         categoryIds: schema.array().members(schema.number()),
         amount: schema.object().members({
           currency: schema.string(),
@@ -21,6 +22,7 @@ class DonationRequestValidator {
     return validator.validate({
       schema: schema.create({
         paymentMethod: schema.enum.optional(['crypto', 'fiat']),
+        conservancyId: schema.number(),
         categoryIds: schema.array.optional().members(schema.number()),
         amount: schema.object.optional().members({
           currency: schema.string(),

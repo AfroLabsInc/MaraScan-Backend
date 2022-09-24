@@ -270,6 +270,7 @@ export default class USSDService {
           await BeneficiaryLand.create({
             beneficiaryId: beneficiary.id,
             titleDeedIdentification: textArray[9],
+            numOfAcres: 6,
           })
         }
 
