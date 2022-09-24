@@ -343,7 +343,7 @@ export default class USSDService {
             } else {
               response = `END You Don't Have Enough Money Left in Your Balance to Withdraw ${Number(
                 textArray[3]
-              )}`
+              )} KES`
             }
           } else {
             response = `You Have No Money In Your Account To Withdraw`

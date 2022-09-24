@@ -29,6 +29,9 @@ class MarascanService {
   public async disbursement(data: DisbursedEventType) {
     const donationRequest = await DonationRequest.findOrFail(data.donationRequestId)
 
+    console.log(data)
+    console.log(donationRequest)
+
     await donationRequest
       .merge({
         isDisbursed: true,
