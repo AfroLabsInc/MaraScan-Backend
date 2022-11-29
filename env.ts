@@ -39,7 +39,6 @@ export default Env.rules({
   SUPER_ADMIN_PASSWORD: Env.schema.string(),
 
   ENCRYPTION_SECRET: Env.schema.string(),
-  RPC_PROVIDER_URL: Env.schema.string(),
 
   COIN_MARKET_CAP_API_BASE_URL: Env.schema.string(),
   COIN_MARKET_CAP_API_KEY: Env.schema.string(),
