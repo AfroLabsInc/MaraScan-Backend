@@ -25,7 +25,10 @@ export default class DonationsController {
       .preload('donor')
       .preload('conservancy')
       .firstOrFail()
-    const beneficiaries = Beneficiary.query().where('categoryId', Number(donation.categoryIds[0]))
+    const beneficiaries = await Beneficiary.query().where(
+      'categoryId',
+      Number(donation.categoryIds[0])
+    )
     return {
       status: 200,
       message: 'Donation Details Fetched Successfully',
