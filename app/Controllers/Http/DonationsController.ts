@@ -32,7 +32,7 @@ export default class DonationsController {
     return {
       status: 200,
       message: 'Donation Details Fetched Successfully',
-      data: { donation, beneficiaries },
+      data: { ...donation, beneficiaries },
     }
   }
 }
