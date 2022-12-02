@@ -7,11 +7,11 @@ export const marascanAddresses = [
   },
   {
     network: 'goerli',
-    address: Env.get('GOERLI_MARASCAN_PROXY_CONTRACT_ADDRESS'),
+    address: Env.get('MARASCAN_PROXY_CONTRACT_ADDRESS'),
   },
   {
     network: 'polygon',
-    address: '',
+    address: Env.get('MARASCAN_PROXY_CONTRACT_ADDRESS'),
   },
   {
     network: 'bsc',
@@ -26,11 +26,11 @@ export const marascanOperationAddresses = [
   },
   {
     network: 'goerli',
-    address: Env.get('GOERLI_MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS'),
+    address: Env.get('MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS'),
   },
   {
     network: 'polygon',
-    address: '',
+    address: Env.get('MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS'),
   },
   {
     network: 'bsc',
@@ -45,11 +45,11 @@ export const usdcAddresses = [
   },
   {
     network: 'goerli',
-    address: Env.get('GOERLI_USDC_CONTRACT_ADDRESS'),
+    address: Env.get('USDC_CONTRACT_ADDRESS'),
   },
   {
     network: 'polygon',
-    address: '',
+    address: Env.get('USDC_CONTRACT_ADDRESS'),
   },
   {
     network: 'bsc',

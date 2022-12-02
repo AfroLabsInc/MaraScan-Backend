@@ -52,11 +52,11 @@ export default Env.rules({
 
   NETWORK: Env.schema.string(),
 
-  GOERLI_MARASCAN_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
+  MARASCAN_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
 
-  GOERLI_MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
+  MARASCAN_OPERATION_PROXY_CONTRACT_ADDRESS: Env.schema.string(),
 
-  GOERLI_USDC_CONTRACT_ADDRESS: Env.schema.string(),
+  USDC_CONTRACT_ADDRESS: Env.schema.string(),
 
   MASTER_WALLET_ADDRESS: Env.schema.string(),
   MASTER_WALLET_PRIVATE_KEY: Env.schema.string(),

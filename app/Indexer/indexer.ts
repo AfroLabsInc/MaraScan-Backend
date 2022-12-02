@@ -19,7 +19,7 @@ const marascanContractIndex = async () => {
   // console.log(await marascanContract.USDC())
 
   // Donation Event
-  const tx = await marascanContract.on(
+  await marascanContract.on(
     'Donated',
     async (donor, amount, donationRequestId, currentUndisbursedBalance, beneficiaries) => {
       const data: DonationEventType = {
@@ -35,7 +35,6 @@ const marascanContractIndex = async () => {
       console.log(data)
     }
   )
-  console.log(tx.deployTransaction)
 
   // Disbursement Event
   await marascanContract.on('Disbursed', async (donation) => {
