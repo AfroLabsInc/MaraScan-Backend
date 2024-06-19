@@ -62,7 +62,7 @@
     "axios": "^0.28.0",
     "cryptr": "^6.0.3",
     "currency-converter-lt": "^2.0.1",
-    "ethers": "^5.7.1",
+    "ethers": "^6.13.1",
     "imagekit": "^4.1.1",
     "luxon": "^3.2.1",
     "mpesa-api": "^3.0.2",
