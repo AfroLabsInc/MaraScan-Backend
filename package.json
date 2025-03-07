@@ -59,7 +59,7 @@
     "@adonisjs/repl": "^3.1.11",
     "@metamask/eth-sig-util": "^5.0.0",
     "africastalking-ts": "^0.0.3",
-    "axios": "^0.28.0",
+    "axios": "^1.8.2",
     "cryptr": "^6.0.3",
     "currency-converter-lt": "^2.0.1",
     "ethers": "^6.13.1",
